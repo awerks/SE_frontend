@@ -1,8 +1,6 @@
-# [Demo]("https://se-project.up.railway.app/")
+[Demo](https://se-project.up.railway.app)
 
 # **Frontend Team**
-
----
 
 ## 📂 **Folder Structure**
 
