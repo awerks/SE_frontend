@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Page</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="stylesheet" href="../css/auth.css" />
+<style>
+    #container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    a {
+        text-decoration: none;
+        ;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        background-color: #0078d7;
+        color: white;
+        margin-right: 16px;
+        border-radius: 4px;
+    }
+
+    #api-result {
+        margin-top: 20px;
+        white-space: pre-wrap;
+        background: #eee;
+        padding: 10px;
+        border-radius: 4px;
+    }
+</style>
+</head>
+
+<body>
+    <main id="container">
+        <h1>Welcome to the Home Page</h1>
+        <button id="api-test">Test Backend API</button>
+        <button onclick="window.location.href='auth.html'">Auth</button>
+        <div id="api-result"></div>
+    </main>
+    <script type="module">
+        import config from "../js/config.js";
+
+        document.getElementById("api-test").addEventListener("click", function () {
+            console.log("Testing backend API... " + config.backendUrl);
+            fetch(`${config.backendUrl}/`,)
+                .then(response => response.text())
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        document.getElementById("api-result").textContent = JSON.stringify(data, null, 2);
+                    } catch (error) {
+                        document.getElementById("api-result").textContent = text;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("api-result").textContent = "Error: " + error.message;
+                });
+        });
+    </script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>
