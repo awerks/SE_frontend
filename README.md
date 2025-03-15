@@ -62,7 +62,9 @@ code .
 
 #### ✅ **Andrei (Navigation & UI Logic)**
 
-- I'm still thinking about JS task
+- Make sure the navigation runs smoothly between pages
+- Make sure no user that does not have the required permission accesses sth they shouldn't 
+- Make sure everything respects the UI logic and integrates well into the system
 
 #### ✅ **Ben Sitta **
 
@@ -101,8 +103,9 @@ code .
 ### **🔹 What Needs to Be Done?**
 
 1. **Chris:** Finalize layout & styling for login/signup.
-2. **Kinlo:**
-3. **Andrei:**
+
+3. **Andrei:** Open public/js/auth.js, add dummy event listeners, call dummy functions until Kinlo is done with his part, redirect users to dashboard.html after login & update the dashboard after login
+
 4. **Lead:** Review work, ensure smooth integration.
 
 ---
