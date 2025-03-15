@@ -70,7 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Log in successful", result);
             alert("Login successful! Welcome back, " + result.name);
 
-            //I will need to redirect he user here
+            localStorage.setItem("userName", result.name);
+
+            window.location.href = "../pages/index.html";
         }
         else
         {
@@ -99,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Sing up successful", result);
             alert("Sign up successful! Welcome, " + name);
 
-            //here I will have to add the redirect for the login view
+            window.location.href = "../pages/index.html";
 
             container.classList.remove("active");
         }
