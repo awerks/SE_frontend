@@ -13,7 +13,7 @@ async function loginUser(data, username) {
         if (resData && typeof resData === "object" && resData.token) {
             alert(`Token: ${resData.token}\nExpiration: ${resData.expiresIn}s`);
             localStorage.setItem("username", username);
-            window.location.href = "../pages/index.html";
+            window.location.href = "./index.html";
         } else {
             alert("Response: " + resData);
         }
