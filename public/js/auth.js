@@ -109,5 +109,21 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Sign up failed. Please try again with different credentials.");
         }
     });
-        
+    // Role selection changes
+    document.addEventListener("DOMContentLoaded", () => {
+        const roleIcons = document.querySelectorAll(".icon");
+        const roleText = document.querySelector(".role-text");
+        let selectedRole = "";
+        roleIcons.forEach(icon => {
+            icon.addEventListener("mouseover", function () {
+                roleText.textContent = `Select your role: ${this.dataset.role}`;
+            });
+
+            icon.addEventListener("click", function (event) {
+                event.preventDefault();
+                selectedRole = this.dataset.role;
+                roleText.textContent = `Select your role: ${selectedRole}`;
+            });
+        });
+    });  
 });

@@ -146,12 +146,12 @@ body {
         z-index: 5;
     }
 }
-
-.social-icons {
+/* Change social icons into role icons */
+.role-icons {
     margin: 20px 0;
 }
 
-.social-icons a {
+.role-icons a {
     border: 1px solid var(--text);
     border-radius: 20%;
     display: inline-flex;
@@ -161,6 +161,32 @@ body {
     width: 40px;
     height: 40px;
     color: var(--text);
+}
+
+.icon:hover {
+    color: #007bff; /* Change icon color on hover */
+}
+
+/* Tooltip effect */
+.icon::after {
+    content: attr(data-role); /* Get role name from data-role attribute */
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.icon:hover::after {
+    opacity: 1; /* Show tooltip when hovering */
 }
 
 .toggle-container {
