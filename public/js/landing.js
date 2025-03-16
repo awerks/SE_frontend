@@ -1,68 +1,79 @@
-
-// Function to load HTML content dynamically into #main-content
-function loadPage(page) {
-  fetch(page)
-      .then(response => response.text())
-      .then(html => {
-          document.getElementById("main-content").innerHTML = html;
-          addTaskListeners(); // Reattach event listeners
-          addProjectListeners();
-          addProjectButtonListeners();
-          addChatButtonListeners();
-          addAllProjectButtonListeners();
-      })
-      .catch(error => console.error("Error loading page:", error));
+function loadPage(url, updateHistory = true) {
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error loading ${url}: ${response.statusText}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById('main-content').innerHTML = html;
+      if (updateHistory) {
+        history.pushState({ page: url }, ''); // for back/forward navigation
+      }
+      console.log('Page loaded:', url);
+      attachDynamicClickHandlers(url);
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById('main-content').innerHTML = `<p>Error loading page.</p>`;
+    });
 }
 
-
-// Load default page (project)
-document.addEventListener("DOMContentLoaded", () => {
-  loadPage("project.html");
-});
-
-function addProjectListeners() {
-  document.querySelectorAll(".project").forEach(proj => {
-      proj.addEventListener("click", () => {
-          //let page = proj.getAttribute("data-page");
-          loadPage(`dashboard.html`);
-      });
-  });
+function attachDynamicClickHandlers(url) {
+  if (url.includes('project.html')) {
+    addIndividualProjectListeners();
+  }
+  if (url.includes('dashboard.html')) {
+    addIndividualTaskListeners();
+  }
 }
 
-// Attach event listeners to task cards
-function addTaskListeners() {
+function addIndividualTaskListeners() {
   document.querySelectorAll(".card_task").forEach(card => {
-      card.addEventListener("click", () => {
-          //et page = card.getAttribute("data-page");
-          loadPage(`task.html`);
-      });
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      loadPage(`task.html`);
+    });
   });
 }
 
-// Attach event listeners to project button
-//might merge thsi to addProjectListers since both should lead to dashbaord page
-function addProjectButtonListeners() {
-  document.querySelectorAll(".sidebar_project_button").forEach(button => {
-      button.addEventListener("click", () => {
-          //et page = card.getAttribute("data-page");
-          loadPage(`dashboard.html`);
-      });
-  });
-}
-function addAllProjectButtonListeners() {
-  document.querySelectorAll(".sidebar_all_project_button").forEach(button => {
-      button.addEventListener("click", () => {
-          //et page = card.getAttribute("data-page");
-          loadPage(`project.html`);
-      });
+function addIndividualProjectListeners() {
+  document.querySelectorAll(".project").forEach(proj => {
+    proj.addEventListener("click", (e) => {
+      e.preventDefault();
+      loadPage(`dashboard.html`);
+    });
   });
 }
 
-function addChatButtonListeners() {
-  document.querySelectorAll(".sidebar_chat_button").forEach(button => {
-      button.addEventListener("click", () => {
-          //et page = card.getAttribute("data-page");
-          loadPage(`chat.html`);
-      });
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebarAllProjectBtn = document.querySelector('.sidebar_all_project_button');
+  if (sidebarAllProjectBtn) {
+    sidebarAllProjectBtn.addEventListener('click', e => {
+      e.preventDefault();
+      loadPage('project.html');
+    });
+  }
+  document.querySelectorAll('.sidebar_project_button').forEach(btn =>
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      loadPage('dashboard.html');
+    })
+  );
+
+  const chatButton = document.querySelector('.sidebar_chat_button');
+  if (chatButton) {
+    chatButton.addEventListener('click', e => {
+      e.preventDefault();
+      loadPage('chat.html');
+    });
+  }
+  window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.page) {
+      console.log('Back/forward navigation detected');
+      console.log('Loading page:', e.state.page);
+      loadPage(e.state.page, false);
+    }
   });
-}
+});
