@@ -32,17 +32,17 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form id="login-form">
                 <h1>Sign In</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                 </div>
-                <span>or use your email password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
+                <span>or use your username password</span>
+                <input type="username" name="username" id="username" placeholder="Username" required minlength="4">
+                <input type="password" name="password" id="password" placeholder="Password" required minlength="8">
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <button id="sign-in-btn">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -60,8 +60,7 @@
             </div>
         </div>
     </div>
-
-    <script src="../js/auth.js"></script>
+    <script type="module" src="../js/auth.js"></script>
 </body>
 
 </html>
