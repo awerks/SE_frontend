@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    //base URL from Illia
+    const BASE_URL = 'https://virtserver.swaggerhub.com/softwareproject-afb/Software_project/1.0.0/';
+
     const container = document.getElementById('container');
     const registerBtn = document.getElementById('register');
     const loginBtn = document.getElementById('login');
@@ -30,32 +33,72 @@ document.addEventListener("DOMContentLoaded", () => {
     //ben's toggle for theme
 
     const signUpForm = document.querySelector(".sign-up form");
-    const loginForm = document.querySelector(".login form");
+    const signInForm = document.querySelector(".login form");
 
-    async function mockHandleLogin(email, password) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                if (email === "test@example.com" && password === "123456") {
-                    resolve({ success: true, role: "worker", name: "Test User" });
-                } else {
-                    resolve({ success: false });
+    //the function illia told me to implement to call backend for login
+    async function handleLogin(email, password)
+    {
+        try
+        {   //` ` for variable interpolation, didn't know why the code was giving errors
+            const response = await fetch(`${BASE_URL}/login`, 
+            {
+                method: 'POST',
+                headers: 
+                {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email, password})
+            });
+
+            if(!response.ok)
+            {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        }
+        catch(error)
+        {
+            console.error('Error duroing login: ', error);
+            return {success: false};
+        }
+    }
+
+    //same function but for singup with calling backend
+
+    async function handleSignup(name, email, password, role)
+    {
+        try
+        {
+            const response = await fetch(`${BASE_URL}/signup`,
+                {
+                    method: 'POST',
+                    headers: 
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({name, email, password, role})
                 }
-            }, 500);
-        });
-    }
-    //mock function from Ben until Kinlo is ready with his
+            );
 
-    async function mockHandleSignup(name, email, password, role) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ success: true });
-            }, 500);
-        });
+            if(!response.ok)
+            {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        }
+        catch(error)
+        {
+            console.error('Error during signup: ', error);
+            return {success: false};
+        }
     }
-    //same for this one
 
     //and now for my part with the event listeners:
+
     signInForm.addEventListener("submit", async (event) => {
+
         event.preventDefault();
         //just for preventing the form from refreshing the page
 
@@ -63,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = signInForm.querySelector('intput[type="password"]').value.trim();
         //messy ahh syntax
 
-        const result = await mockHandleLogin(email, password);
+        const result = await handleLogin(email, password); 
 
         if(result.success) 
         {
@@ -89,12 +132,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = signUpForm.querySelector('input[type]="email"]').value.trim();
         const password = signUpForm.querySelector('input[type]="password"]').value.trim();
         const role = "worker";
+        
         //I will leave it like this for now as the default role
         //we need to figure out if employees can sign up as team leads or they need to be
         //promoted
 
         //this will get replaced after Kinlo does his part:
-        const result = await mockHandleSignup(name, email, password, role);
+
+        const result = await handleSignup(name, email, password, role);
 
         if(result.success)
         {
