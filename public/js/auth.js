@@ -4,6 +4,7 @@ import { loginUser } from "./api.js";
 document.addEventListener("DOMContentLoaded", () => {
     initializeUI();
     initializeTheme();
+    handleSelectionRoles();
 });
 
 function initializeUI() {
@@ -53,3 +54,22 @@ function handleSignIn(event) {
 // Add functions to handle registration
 
 
+function handleSelectionRoles() {
+    // Role selection changes
+  
+    const roleIcons = document.querySelectorAll(".icon");
+    const roleText = document.querySelector(".role-text");
+    let selectedRole = "";
+  
+    roleIcons.forEach(icon => {
+      icon.addEventListener("mouseover", function () {
+        roleText.textContent = `Select your role: ${this.dataset.role}`;
+      });
+
+      icon.addEventListener("click", function (event) {
+        event.preventDefault();
+        selectedRole = this.dataset.role;
+        roleText.textContent = `Select your role: ${selectedRole}`;
+      });
+    });
+}
