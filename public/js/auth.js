@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //ben's toggle for theme
 
     const signUpForm = document.querySelector(".sign-up form");
-    const loginForm = document.querySelector(".login form");
+    const signInForm = document.querySelector(".sign-in form");
 
     async function mockHandleLogin(email, password) {
         return new Promise((resolve) => {
@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         //just for preventing the form from refreshing the page
 
-        const email = singInForm.querySelector('input[type="email"]').value.trim();
-        const password = signInForm.querySelector('intput[type="password"]').value.trim();
+        const email = signInForm.querySelector('input[type="email"]').value.trim();
+        const password = signInForm.querySelector('input[type="password"]').value.trim();
         //messy ahh syntax
 
         const result = await mockHandleLogin(email, password);
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
     signUpForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const name = signUpForm.querySelector('input[name="name"]').value.trim();
-        const email = signUpForm.querySelector('input[type]="email"]').value.trim();
-        const password = signUpForm.querySelector('input[type]="password"]').value.trim();
+        const name = signUpForm.querySelector('input[type="text"]').value.trim();
+        const email = signUpForm.querySelector('input[type="email"]').value.trim();
+        const password = signUpForm.querySelector('input[type="password"]').value.trim();
         const role = "worker";
         //I will leave it like this for now as the default role
         //we need to figure out if employees can sign up as team leads or they need to be
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if(result.success)
         {
-            console.log("Sing up successful", result);
+            console.log("Sign up successful", result);
             alert("Sign up successful! Welcome, " + name);
 
             //here I will have to add the redirect for the login view
