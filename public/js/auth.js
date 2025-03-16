@@ -33,14 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
     //ben's toggle for theme
 
     const signUpForm = document.querySelector(".sign-up form");
-    const signInForm = document.querySelector(".login form");
+    const signInForm = document.querySelector(".sign-in form");
 
     //the function illia told me to implement to call backend for login
     async function handleLogin(email, password)
     {
         try
         {   //` ` for variable interpolation, didn't know why the code was giving errors
-            const response = await fetch(`${BASE_URL}/login`, 
+            const response = await fetch(`${BASE_URL}login`, 
             {
                 method: 'POST',
                 headers: 
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
         try
         {
-            const response = await fetch(`${BASE_URL}/signup`,
+            const response = await fetch(`${BASE_URL}signup`,
                 {
                     method: 'POST',
                     headers: 
@@ -102,11 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         //just for preventing the form from refreshing the page
 
-        const email = singInForm.querySelector('input[type="email"]').value.trim();
-        const password = signInForm.querySelector('intput[type="password"]').value.trim();
+        const email = signInForm.querySelector('input[type="email"]').value.trim();
+        const password = signInForm.querySelector('input[type="password"]').value.trim();
         //messy ahh syntax
 
         const result = await handleLogin(email, password); 
+        console.log("Login result:", result);
 
         if(result.success) 
         {
@@ -129,8 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         const name = signUpForm.querySelector('input[name="name"]').value.trim();
-        const email = signUpForm.querySelector('input[type]="email"]').value.trim();
-        const password = signUpForm.querySelector('input[type]="password"]').value.trim();
+        const email = signUpForm.querySelector('input[type="email"]').value.trim();
+        const password = signUpForm.querySelector('input[type="password"]').value.trim();
         const role = "worker";
         
         //I will leave it like this for now as the default role
