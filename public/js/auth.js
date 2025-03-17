@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeUI() {
-  const container = document.getElementById("container");
+  const container = document.getElementById("auth-container");
   const registerBtn = document.getElementById("register");
   const loginBtn = document.getElementById("login");
   const signInBtn = document.getElementById("sign-in-btn");
