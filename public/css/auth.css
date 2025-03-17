@@ -32,8 +32,8 @@ body {
     color: var(--text);
     background-color: var(--grey);
 }
-
-.container {
+/* Updated container id to be more specific to auth-container */
+#auth-container {
     background-color: var(--background);
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
@@ -44,7 +44,7 @@ body {
     min-height: 600px;
 }
 
-.container p {
+#auth-container p {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
@@ -52,19 +52,19 @@ body {
     color: var(--text);
 }
 
-.container span {
+#auth-container span {
     font-size: 12px;
     color: var(--text);
 }
 
-.container a {
+#auth-container a {
     color: var(--text);
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
 }
 
-.container button {
+#auth-container button {
     background-color: var(--primary);
     color: var(--button-text);
     font-size: 12px;
@@ -78,12 +78,12 @@ body {
     cursor: pointer;
 }
 
-.container button.hidden {
+#auth-container button.hidden {
     background-color: transparent;
     border-color: var(--button-text);
 }
 
-.container form {
+#auth-container form {
     background-color: var(--background);
     display: flex;
     align-items: center;
@@ -93,7 +93,7 @@ body {
     height: 100%;
 }
 
-.container input {
+#auth-container input {
     background-color: var(--secondary);
     border: none;
     margin: 8px 0;
@@ -118,7 +118,7 @@ body {
     z-index: 2;
 }
 
-.container.active .sign-in {
+#auth-container.active .sign-in {
     transform: translateX(100%);
 }
 
@@ -129,7 +129,7 @@ body {
     z-index: 1;
 }
 
-.container.active .sign-up {
+#auth-container.active .sign-up {
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -164,10 +164,9 @@ body {
 }
 
 .icon:hover {
-    color: #007bff; /* Change icon color on hover */
+    color: #007bff;
 }
 
-/* Tooltip effect */
 .icon::after {
     content: attr(data-role); /* Get role name from data-role attribute */
     position: absolute;
@@ -202,7 +201,7 @@ body {
     background-color: var(--accent);
 }
 
-.container.active .toggle-container {
+#auth-container.active .toggle-container {
     transform: translateX(-100%);
     border-radius: 0 100px 100px 0;
 }
@@ -220,7 +219,7 @@ body {
     transition: all 0.6s ease-in-out;
 }
 
-.container.active .toggle {
+#auth-container.active .toggle {
     transform: translateX(50%);
 }
 
@@ -239,11 +238,32 @@ body {
     transition: all 0.6s ease-in-out;
 }
 
+
+.toggle-panel h1, .toggle-panel p {
+    color: var(--text);  
+    transition: color 0.6s ease;
+}
+
+#register, #login {
+    color: var(--button-text);
+    transition: color 0.6s ease !important; 
+}
+/* issue with this button not transitioning the same as the others */
+#auth-container.active #register {
+    color: var(--text);  
+    transition: color 0.6s ease;
+}
+
+#auth-container.active #login {
+    color: var(--text); 
+    transition: color 0.6s ease;
+}
+
 .toggle-left {
     transform: translateX(-200%);
 }
 
-.container.active .toggle-left {
+#auth-container.active .toggle-left {
     transform: translateX(0);
 }
 
@@ -252,6 +272,35 @@ body {
     transform: translateX(0);
 }
 
-.container.active .toggle-right {
+#auth-container.active .toggle-right {
     transform: translateX(200%);
+}
+/* toggle button css */
+.toggle-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#auth-theme-toggle {
+    background-color: var(--primary);
+    border: none;
+    font-size: 14px;  
+    color: var(--background);
+    padding: 6px 12px; 
+    border-radius: 30px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+    font-weight: 600; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* hover effect on toggle button */
+#auth-theme-toggle:hover {
+    background-color: var(--secondary);
+}
+
+#auth-theme-toggle:active {
+    background-color: var(--accent); 
 }

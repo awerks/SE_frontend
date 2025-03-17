@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeUI() {
-    const container = document.getElementById("container");
+    const authContainer = document.getElementById("auth-container");
     const registerBtn = document.getElementById("register");
     const loginBtn = document.getElementById("login");
     const signInBtn = document.getElementById("sign-in-btn");
@@ -16,13 +16,13 @@ function initializeUI() {
 
     if (registerBtn) {
         registerBtn.addEventListener("click", () => {
-            container.classList.add("active");
+            authContainer.classList.add("active");
         });
     }
 
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
-            container.classList.remove("active");
+            authContainer.classList.remove("active");
         });
     }
 
