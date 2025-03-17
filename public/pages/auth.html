@@ -19,10 +19,10 @@
             <form>
                 <h1>Create Account</h1>
                 <div class="role-text">Select your role:</div>
-                    <div class="role-icon">           
+                <div class="role-icons">
                     <a href="#" class="icon" data-role="Admin">
                         <i class="fa-solid fa-people-group"></i>
-                    </a>                    
+                    </a>
                     <a href="#" class="icon" data-role="Team Leader">
                         <i class="fa-solid fa-code-merge"></i>
                     </a>
@@ -31,21 +31,22 @@
                     </a>
                 </div>
                 <!-- Role selection changes from Social icons -->
+                <input type="firstname" name="firstname" id="firstname" placeholder="First name: " required>
+                <input type="lastname" name="lastname" id="lastname" placeholder="Last name: " required>
+                <input type="email" name="email" id="email" placeholder="example@gmail.com " required>
+                <input type="username" name="username" id="username" placeholder="User name: " required>
+                <input type="date" name="birthday" id="birthday" required>
+                <input type="password" name="password" id="password" placeholder="Password" required minlength="8">
                 <button>Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form id="login-form">
                 <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                </div>
-                <span>or use your email password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
+                <input type="username" name="username" id="username" placeholder="Username" required minlength="4">
+                <input type="password" name="password" id="password" placeholder="Password" required minlength="8">
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <button id="sign-in-btn">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -63,8 +64,7 @@
             </div>
         </div>
     </div>
-
-    <script src="../js/auth.js"></script>
+    <script type="module" src="../js/auth.js"></script>
 </body>
 
 </html>

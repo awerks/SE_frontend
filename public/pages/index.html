@@ -6,45 +6,8 @@
 <title>Home Page</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 <link rel="stylesheet" href="../css/auth.css" />
-<style>
-    #container {
-        max-width: 600px;
-        margin: 50px auto;
-        background: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
-    }
+<link rel="stylesheet" href="../css/index.css" />
 
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-    }
-
-    a {
-        text-decoration: none;
-        ;
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        cursor: pointer;
-        border: none;
-        background-color: #0078d7;
-        color: white;
-        margin-right: 16px;
-        border-radius: 4px;
-    }
-
-    #api-result {
-        margin-top: 20px;
-        white-space: pre-wrap;
-        background: #eee;
-        padding: 10px;
-        border-radius: 4px;
-    }
-</style>
 </head>
 
 <body>
@@ -52,6 +15,7 @@
         <h1>Welcome to the Home Page</h1>
         <button id="api-test">Test Backend API</button>
         <button onclick="window.location.href='auth.html'">Auth</button>
+        <button onclick="window.location.href='landing.html'">Landing</button>
         <div id="api-result"></div>
     </main>
     <script type="module">
@@ -74,7 +38,7 @@
                 });
         });
     </script>
-    <script src="../js/auth.js"></script>
+    <script type="module" src="../js/auth.js"></script>
 </body>
 
 </html>
