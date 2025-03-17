@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup Test Page</title>
+    <link rel="stylesheet" href="../css/test.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Signup Test Page</h2>
+
+      <!-- Test Form -->
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="signup-firstname">First Name:</label>
+          <input type="text" id="signup-firstname" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-lastname">Last Name:</label>
+          <input type="text" id="signup-lastname" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-username">Username:</label>
+          <input type="text" id="signup-username" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email:</label>
+          <input type="email" id="signup-email" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-birthdate">Birthdate:</label>
+          <input type="date" id="signup-birthdate" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password:</label>
+          <input
+            type="password"
+            id="signup-password"
+            required
+            minlength="6"
+            placeholder="Minimum 6 characters"
+          />
+        </div>
+        <div class="form-group">
+          <label for="signup-confirm-password">Confirm Password:</label>
+          <input
+            type="password"
+            id="signup-confirm-password"
+            required
+            minlength="6"
+            placeholder="Minimum 6 characters"
+          />
+        </div>
+
+        <div class="role-selection">
+          <p class="role-text">Select your role:</p>
+          <div class="icon" data-role="student">Student</div>
+          <div class="icon" data-role="teacher">Teacher</div>
+          <div class="icon" data-role="admin">Admin</div>
+        </div>
+
+        <button type="submit" id="sign-up-btn">Sign Up</button>
+      </form>
+
+      <!-- Test Results -->
+      <div id="test-results">
+        <h3>Test Results</h3>
+        <div id="mock-users"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { signupUser } from "./js/api.js";
+
+      // Handle role selection
+      function initializeRoleSelection() {
+        const roleIcons = document.querySelectorAll(".icon");
+        const roleText = document.querySelector(".role-text");
+
+        roleIcons.forEach((icon) => {
+          icon.addEventListener("click", () => {
+            // Remove selected class from all icons
+            roleIcons.forEach((i) => i.classList.remove("selected"));
+            // Add selected class to clicked icon
+            icon.classList.add("selected");
+            roleText.textContent = `Selected role: ${icon.dataset.role}`;
+          });
+        });
+      }
+
+      // Display mock users with all relevant information
+      function displayMockUsers() {
+        const mockUsersDiv = document.getElementById("mock-users");
+
+        // Clear previous content
+        mockUsersDiv.textContent = "";
+
+        // Create and append heading
+        const heading = document.createElement("h4");
+        heading.textContent = "Registered Users:";
+        mockUsersDiv.appendChild(heading);
+
+        // Access the mockUsers array from api.js
+        const mockUsers = window.mockUsers || [];
+        if (mockUsers.length === 0) {
+          const noUsers = document.createElement("p");
+          noUsers.textContent = "No users registered yet";
+          mockUsersDiv.appendChild(noUsers);
+          return;
+        }
+
+        // Create and append list
+        const list = document.createElement("ul");
+        mockUsers.forEach((user) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `${user.firstName} ${user.lastName} (${user.username}) - ${user.email} - ${user.role}`;
+          list.appendChild(listItem);
+        });
+        mockUsersDiv.appendChild(list);
+      }
+
+      // Handle form submission
+      async function handleFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const submitButton = form.querySelector("#sign-up-btn");
+
+        try {
+          // Get selected role
+          const selectedRole = form.querySelector(".icon.selected");
+          if (!selectedRole) {
+            throw new Error("Please select a role");
+          }
+
+          // Get form values
+          const data = {
+            firstName: form.querySelector("#signup-firstname").value.trim(),
+            lastName: form.querySelector("#signup-lastname").value.trim(),
+            username: form.querySelector("#signup-username").value.trim(),
+            email: form.querySelector("#signup-email").value.trim(),
+            birthdate: form.querySelector("#signup-birthdate").value,
+            password: form.querySelector("#signup-password").value,
+            role: selectedRole.dataset.role,
+          };
+
+          // Validate password confirmation
+          const confirmPassword = form.querySelector(
+            "#signup-confirm-password"
+          ).value;
+          if (data.password !== confirmPassword) {
+            throw new Error("Passwords do not match");
+          }
+
+          // Disable submit button and show loading state
+          submitButton.disabled = true;
+          submitButton.textContent = "Signing up...";
+
+          // Call signup API
+          const result = await signupUser(data);
+
+          // Show success message
+          const successMessage = document.createElement("div");
+          successMessage.className = "test-case";
+          successMessage.innerHTML = `
+            <div class="test-case-header">
+              <span class="test-case-name">Manual Signup</span>
+              <span class="success-icon">✅</span>
+            </div>
+            <div class="test-result">${JSON.stringify(result, null, 2)}</div>
+          `;
+          document.getElementById("test-results").appendChild(successMessage);
+
+          // Reset form
+          form.reset();
+          roleIcons.forEach((icon) => icon.classList.remove("selected"));
+          roleText.textContent = "Select your role:";
+        } catch (error) {
+          // Show error message
+          const errorMessage = document.createElement("div");
+          errorMessage.className = "test-case";
+          errorMessage.innerHTML = `
+            <div class="test-case-header">
+              <span class="test-case-name">Manual Signup</span>
+              <span class="error-icon">❌</span>
+            </div>
+            <div class="error-message">${error.message}</div>
+          `;
+          document.getElementById("test-results").appendChild(errorMessage);
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          submitButton.textContent = "Sign Up";
+        }
+
+        // Update displayed users
+        displayMockUsers();
+      }
+
+      // Run automated test cases
+      async function runTests() {
+        try {
+          // Load test cases from JSON file
+          const response = await fetch("./testUsers.json");
+          const { testCases } = await response.json();
+
+          const resultsDiv = document.getElementById("test-results");
+
+          // Create and append heading
+          const heading = document.createElement("h4");
+          heading.textContent = "Automated Test Cases:";
+          resultsDiv.appendChild(heading);
+
+          for (const test of testCases) {
+            // Create test case container
+            const testCase = document.createElement("div");
+            testCase.className = "test-case";
+
+            // Create test case header
+            const header = document.createElement("div");
+            header.className = "test-case-header";
+
+            // Create test name
+            const testName = document.createElement("span");
+            testName.className = "test-case-name";
+            testName.textContent = test.name;
+            header.appendChild(testName);
+
+            try {
+              const result = await signupUser(test.data);
+
+              // Add success/error icon
+              const icon = document.createElement("span");
+              icon.className =
+                test.expectedResult === "success"
+                  ? "success-icon"
+                  : "error-icon";
+              icon.textContent =
+                test.expectedResult === "success" ? "✅" : "❌";
+              header.appendChild(icon);
+
+              // Add result details
+              const resultText = document.createElement("div");
+              resultText.className = "test-result";
+              resultText.textContent = JSON.stringify(result, null, 2);
+
+              testCase.appendChild(header);
+              testCase.appendChild(resultText);
+            } catch (error) {
+              // Add error icon
+              const icon = document.createElement("span");
+              icon.className =
+                test.expectedResult === "error" ? "success-icon" : "error-icon";
+              icon.textContent = test.expectedResult === "error" ? "✅" : "❌";
+              header.appendChild(icon);
+
+              // Add error message
+              const errorText = document.createElement("div");
+              errorText.className = "error-message";
+              errorText.textContent = error.message;
+
+              testCase.appendChild(header);
+              testCase.appendChild(errorText);
+            }
+
+            resultsDiv.appendChild(testCase);
+          }
+        } catch (error) {
+          console.error("Error loading test cases:", error);
+          const resultsDiv = document.getElementById("test-results");
+          const errorText = document.createElement("p");
+          errorText.className = "error-message";
+          errorText.textContent =
+            "Error loading test cases. Please check the console for details.";
+          resultsDiv.appendChild(errorText);
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeRoleSelection();
+        document
+          .getElementById("signup-form")
+          .addEventListener("submit", handleFormSubmit);
+        displayMockUsers();
+        runTests();
+      });
+    </script>
+  </body>
+</html>

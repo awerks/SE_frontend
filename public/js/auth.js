@@ -1,75 +1,124 @@
 import { initializeTheme } from "./theme.js";
-import { loginUser } from "./api.js";
+import { loginUser, signupUser } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    initializeUI();
-    initializeTheme();
-    handleSelectionRoles();
+  initializeUI();
+  initializeTheme();
+  handleSelectionRoles();
 });
 
 function initializeUI() {
-    const authContainer = document.getElementById("auth-container");
-    const registerBtn = document.getElementById("register");
-    const loginBtn = document.getElementById("login");
-    const signInBtn = document.getElementById("sign-in-btn");
-    const loginForm = document.getElementById("login-form");
+  const container = document.getElementById("container");
+  const registerBtn = document.getElementById("register");
+  const loginBtn = document.getElementById("login");
+  const signInBtn = document.getElementById("sign-in-btn");
+  const signUpBtn = document.getElementById("sign-up-btn");
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
 
-    if (registerBtn) {
-        registerBtn.addEventListener("click", () => {
-            authContainer.classList.add("active");
-        });
-    }
+  if (registerBtn) {
+    registerBtn.addEventListener("click", () => {
+      container.classList.add("active");
+    });
+  }
 
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-            authContainer.classList.remove("active");
-        });
-    }
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      container.classList.remove("active");
+    });
+  }
 
-    if (signInBtn && loginForm) {
-        signInBtn.addEventListener("click", (event) => handleSignIn(event));
-    }
+  if (signInBtn && loginForm) {
+    signInBtn.addEventListener("click", (event) => handleSignIn(event));
+  }
+
+  if (signUpBtn && signupForm) {
+    signUpBtn.addEventListener("click", (event) => handleSignUp(event));
+  }
 }
 
 function handleSignIn(event) {
-    event.preventDefault();
+  if (!document.getElementById("login-form").checkValidity()) return;
+  event.preventDefault();
 
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
 
-    const username = usernameInput ? usernameInput.value.trim() : "";
-    const password = passwordInput ? passwordInput.value.trim() : "";
+  const username = usernameInput ? usernameInput.value.trim() : "";
+  const password = passwordInput ? passwordInput.value.trim() : "";
 
-    if (!username || !password) {
-        alert("Please fill in both username and password.");
-        return;
-    }
+  const data = { username, password };
 
-    const data = { username, password };
-
-    loginUser(data, username);
+  loginUser(data, username);
 }
 
+async function handleSignUp(event) {
 
-// Add functions to handle registration
+  const signupForm = document.getElementById("signup-form");
+  if (!signupForm.checkValidity()) return;
+  event.preventDefault();
 
+  const firstName = document.getElementById("signup-firstname").value.trim();
+  const lastName = document.getElementById("signup-lastname").value.trim();
+  const username = document.getElementById("signup-username").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value.trim();
+  const confirmPassword = document.getElementById("signup-confirm-password").value.trim();
+  const birthdate = document.getElementById("signup-birthdate").value;
+  const role = document.querySelector(".icon.selected")?.dataset.role;
+
+  if (!role) return alert("Please select a role.");
+
+  if (password !== confirmPassword) return alert("Passwords do not match.");
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return alert("Please enter a valid email address.");
+
+  const data = { firstName, lastName, username, email, password, birthdate, role };
+  const signUpBtn = document.getElementById("sign-up-btn");
+
+  try {
+    if (signUpBtn) {
+      signUpBtn.disabled = true;
+      signUpBtn.textContent = "Signing up...";
+    }
+
+    const response = await signupUser(data);
+
+    if (response.success) {
+      console.log("User: ", response.user);
+      alert("Registration successful! Please log in.");
+      signupForm.reset();
+      document.getElementById("container")?.classList.remove("active");
+    }
+  } catch (error) {
+    alert(error.message || "Registration failed. Please try again.");
+  } finally {
+    if (signUpBtn) {
+      signUpBtn.disabled = false;
+      signUpBtn.textContent = "Sign Up";
+    }
+  }
+}
 
 function handleSelectionRoles() {
-    // Role selection changes
-  
-    const roleIcons = document.querySelectorAll(".icon");
-    const roleText = document.querySelector(".role-text");
-    let selectedRole = "";
-  
-    roleIcons.forEach(icon => {
-      icon.addEventListener("mouseover", function () {
-        roleText.textContent = `Select your role: ${this.dataset.role}`;
-      });
+  const roleIcons = document.querySelectorAll(".icon");
+  const roleText = document.querySelector(".role-text");
+  let selectedRole = "";
 
-      icon.addEventListener("click", function (event) {
-        event.preventDefault();
-        selectedRole = this.dataset.role;
-        roleText.textContent = `Select your role: ${selectedRole}`;
-      });
+  roleIcons.forEach((icon) => {
+    icon.addEventListener("mouseover", function () {
+      roleText.textContent = `Select your role: ${this.dataset.role}`;
     });
+
+    icon.addEventListener("click", function (event) {
+      event.preventDefault();
+      // Remove selected class from all icons
+      roleIcons.forEach((i) => i.classList.remove("selected"));
+      // Add selected class to clicked icon
+      this.classList.add("selected");
+      selectedRole = this.dataset.role;
+      roleText.textContent = `Selected role: ${selectedRole}`;
+    });
+  });
 }

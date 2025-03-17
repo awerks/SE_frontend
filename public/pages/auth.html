@@ -16,7 +16,7 @@
     </div>
     <div class="auth-container" id="auth-container">
         <div class="form-container sign-up">
-            <form>
+            <form id="signup-form">
                 <h1>Create Account</h1>
                 <div class="role-text">Select your role:</div>
                 <div class="role-icons">
@@ -30,14 +30,31 @@
                         <i class="fa-solid fa-code"></i>
                     </a>
                 </div>
-                <!-- Changed view of textbox features -->
-                <input type="firstname" name="firstname" id="firstname" placeholder="First Name " required>
-                <input type="lastname" name="lastname" id="lastname" placeholder="Last Name " required>
-                <input type="email" name="email" id="email" placeholder="example@gmail.com " required>
-                <input type="username" name="username" id="username" placeholder="Username " required>
-                <input type="date" name="birthdate" id="birthdate" required>
-                <input type="password" name="password" id="password" placeholder="Password " required minlength="8">
-                <button>Register</button>
+                <label for="signup-firstname">First Name:</label>
+                <input type="text" id="signup-firstname" required minlength="2" placeholder="Enter your first name" />
+                <label for="signup-lastname">Last Name:</label>
+                <input type="text" id="signup-lastname" required minlength="2" placeholder="Enter your last name" />
+                <label for="signup-username">Username:</label>
+                <input type="text" id="signup-username" required minlength="4" placeholder="Enter your username" />
+                <label for="signup-email">Email:</label>
+                <input type="email" id="signup-email" required minlength="4" placeholder="Enter your email address" />
+                <label for="signup-birthdate">Birthdate:</label>
+                <input type="date" id="signup-birthdate" required placeholder="Select your birthdate" />
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" required minlength="8"
+                    placeholder="Minimum 8 characters, enter your password" />
+                <label for="signup-confirm-password">Confirm Password:</label>
+                <input type="password" id="signup-confirm-password" required minlength="8"
+                    placeholder="Re-enter your password" />
+
+                <!-- <div class="role-selection">
+                    <p class="role-text">Select your role:</p>
+                    <div class="icon" data-role="student">Student</div>
+                    <div class="icon" data-role="teacher">Teacher</div>
+                    <div class="icon" data-role="admin">Admin</div>
+                </div> -->
+
+                <button type="submit" id="sign-up-btn">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
