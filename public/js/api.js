@@ -31,16 +31,16 @@ async function loginUser(data, username) {
   }
 }
 
-// Mock function to validate email format
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
+// // Mock function to validate email format
+// function isValidEmail(email) {
+//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   return emailRegex.test(email);
+// }
 
-// Mock function to check if username is available
-function isUsernameAvailable(username) {
-  return !mockUsers.some((user) => user.username === username);
-}
+// // Mock function to check if username is available
+// function isUsernameAvailable(username) {
+//   return !mockUsers.some((user) => user.username === username);
+// }
 
 // Mock function to simulate server-side signup
 async function signupUser(data) {
@@ -49,16 +49,16 @@ async function signupUser(data) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Mock validation
-    if (!data.username || !data.password || !data.email || !data.role) {
+    if (
+      !data.username ||
+      !data.password ||
+      !data.email ||
+      !data.role ||
+      !data.firstName ||
+      !data.lastName ||
+      !data.birthdate
+    ) {
       throw new Error("All fields are required");
-    }
-
-    if (!isValidEmail(data.email)) {
-      throw new Error("Invalid email format");
-    }
-
-    if (!isUsernameAvailable(data.username)) {
-      throw new Error("Username already exists");
     }
 
     if (data.password.length < 6) {
@@ -68,10 +68,13 @@ async function signupUser(data) {
     // Create mock user
     const newUser = {
       id: mockUsers.length + 1,
-      username: data.username,
+      firstName: data.firstName,
+      lastName: data.lastName,
       email: data.email,
+      birthdate: data.birthdate,
+      username: data.username,
+      password: data.password,
       role: data.role,
-      createdAt: new Date().toISOString(),
     };
 
     // Add to mock database
@@ -82,8 +85,10 @@ async function signupUser(data) {
       success: true,
       message: "Registration successful",
       user: {
-        username: newUser.username,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
+        username: newUser.username,
         role: newUser.role,
       },
     };
