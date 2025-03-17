@@ -50,6 +50,8 @@ async function signupUser(data) {
 
     // Mock validation
     if (
+      !data.firstName ||
+      !data.lastName ||
       !data.username ||
       !data.password ||
       !data.email ||
@@ -61,13 +63,8 @@ async function signupUser(data) {
       throw new Error("All fields are required");
     }
 
-    if (data.password.length < 6) {
-      throw new Error("Password must be at least 6 characters long");
-    }
-
     // Create mock user
     const newUser = {
-      id: mockUsers.length + 1,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -89,6 +86,7 @@ async function signupUser(data) {
         lastName: newUser.lastName,
         email: newUser.email,
         username: newUser.username,
+        birthdate: newUser.birthdate,
         role: newUser.role,
       },
     };
@@ -99,5 +97,3 @@ async function signupUser(data) {
 }
 
 export { loginUser, signupUser };
-
-// Add functions to handle registration

@@ -38,6 +38,7 @@ function initializeUI() {
 }
 
 function handleSignIn(event) {
+  if (!document.getElementById("login-form").checkValidity()) return;
   event.preventDefault();
 
   const usernameInput = document.getElementById("username");
@@ -46,85 +47,53 @@ function handleSignIn(event) {
   const username = usernameInput ? usernameInput.value.trim() : "";
   const password = passwordInput ? passwordInput.value.trim() : "";
 
-  if (!username || !password) {
-    alert("Please fill in both username and password.");
-    return;
-  }
-
   const data = { username, password };
 
   loginUser(data, username);
 }
 
 async function handleSignUp(event) {
+
+  const signupForm = document.getElementById("signup-form");
+  if (!signupForm.checkValidity()) return;
   event.preventDefault();
 
-  // Get form elements
-  const usernameInput = document.getElementById("signup-username");
-  const emailInput = document.getElementById("signup-email");
-  const passwordInput = document.getElementById("signup-password");
-  const confirmPasswordInput = document.getElementById(
-    "signup-confirm-password"
-  );
-  const selectedRole = document.querySelector(".icon.selected")?.dataset.role;
+  const firstName = document.getElementById("signup-firstname").value.trim();
+  const lastName = document.getElementById("signup-lastname").value.trim();
+  const username = document.getElementById("signup-username").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value.trim();
+  const confirmPassword = document.getElementById("signup-confirm-password").value.trim();
+  const birthdate = document.getElementById("signup-birthdate").value;
+  const role = document.querySelector(".icon.selected")?.dataset.role;
 
-  // Get form values
-  const username = usernameInput ? usernameInput.value.trim() : "";
-  const email = emailInput ? emailInput.value.trim() : "";
-  const password = passwordInput ? passwordInput.value.trim() : "";
-  const confirmPassword = confirmPasswordInput
-    ? confirmPasswordInput.value.trim()
-    : "";
+  if (!role) return alert("Please select a role.");
 
-  // Client-side validation
-  if (!username || !email || !password || !confirmPassword) {
-    alert("Please fill in all fields.");
-    return;
-  }
+  if (password !== confirmPassword) return alert("Passwords do not match.");
 
-  if (password !== confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return alert("Please enter a valid email address.");
 
-  if (!selectedRole) {
-    alert("Please select a role.");
-    return;
-  }
-
-  // Prepare data for API
-  const data = {
-    username,
-    email,
-    password,
-    role: selectedRole,
-  };
+  const data = { firstName, lastName, username, email, password, birthdate, role };
+  const signUpBtn = document.getElementById("sign-up-btn");
 
   try {
-    // Show loading state
-    const signUpBtn = document.getElementById("sign-up-btn");
     if (signUpBtn) {
       signUpBtn.disabled = true;
       signUpBtn.textContent = "Signing up...";
     }
 
-    // Call signup API
     const response = await signupUser(data);
 
-    // Handle successful signup
     if (response.success) {
+      console.log("User: ", response.user);
       alert("Registration successful! Please log in.");
-      // Reset form
-      document.getElementById("signup-form")?.reset();
-      // Switch to login view
+      signupForm.reset();
       document.getElementById("container")?.classList.remove("active");
     }
   } catch (error) {
-    // Handle signup error
     alert(error.message || "Registration failed. Please try again.");
   } finally {
-    // Reset button state
-    const signUpBtn = document.getElementById("sign-up-btn");
     if (signUpBtn) {
       signUpBtn.disabled = false;
       signUpBtn.textContent = "Sign Up";
