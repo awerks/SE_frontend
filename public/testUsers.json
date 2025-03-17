@@ -1,0 +1,43 @@
+{
+  "testCases": [
+    {
+      "name": "Valid Signup",
+      "data": {
+        "username": "testuser1",
+        "email": "test1@example.com",
+        "password": "password123",
+        "role": "student",
+        "firstName": "John",
+        "lastName": "Doe",
+        "birthdate": "1990-01-01"
+      },
+      "expectedResult": "success"
+    },
+    {
+      "name": "Invalid Email",
+      "data": {
+        "username": "testuser2",
+        "email": "invalid-email",
+        "password": "password123",
+        "role": "teacher",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "birthdate": "1995-05-15"
+      },
+      "expectedResult": "error"
+    },
+    {
+      "name": "Duplicate Username",
+      "data": {
+        "username": "testuser1",
+        "email": "test2@example.com",
+        "password": "password123",
+        "role": "admin",
+        "firstName": "Bob",
+        "lastName": "Johnson",
+        "birthdate": "1985-12-25"
+      },
+      "expectedResult": "error"
+    }
+  ]
+}
