@@ -16,29 +16,50 @@
     </div>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form id="signup-form">
                 <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                <div class="role-text">Select your role:</div>
+                <div class="role-icons">
+                    <a href="#" class="icon" data-role="Admin">
+                        <i class="fa-solid fa-people-group"></i>
+                    </a>
+                    <a href="#" class="icon" data-role="Team Leader">
+                        <i class="fa-solid fa-code-merge"></i>
+                    </a>
+                    <a href="#" class="icon" data-role="Worker">
+                        <i class="fa-solid fa-code"></i>
+                    </a>
                 </div>
-                <span>or use your email for registration</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <button>Sign Up</button>
+                <label for="signup-firstname">First Name:</label>
+                <input type="text" id="signup-firstname" required minlength="2" placeholder="Enter your first name" />
+                <label for="signup-lastname">Last Name:</label>
+                <input type="text" id="signup-lastname" required minlength="2" placeholder="Enter your last name" />
+                <label for="signup-username">Username:</label>
+                <input type="text" id="signup-username" required minlength="4" placeholder="Enter your username" />
+                <label for="signup-email">Email:</label>
+                <input type="email" id="signup-email" required minlength="4" placeholder="Enter your email address" />
+                <label for="signup-birthdate">Birthdate:</label>
+                <input type="date" id="signup-birthdate" required placeholder="Select your birthdate" />
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" required minlength="8"
+                    placeholder="Minimum 8 characters, enter your password" />
+                <label for="signup-confirm-password">Confirm Password:</label>
+                <input type="password" id="signup-confirm-password" required minlength="8"
+                    placeholder="Re-enter your password" />
+
+                <!-- <div class="role-selection">
+                    <p class="role-text">Select your role:</p>
+                    <div class="icon" data-role="student">Student</div>
+                    <div class="icon" data-role="teacher">Teacher</div>
+                    <div class="icon" data-role="admin">Admin</div>
+                </div> -->
+
+                <button type="submit" id="sign-up-btn">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
             <form id="login-form">
                 <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                </div>
-                <span>or use your username password</span>
                 <input type="username" name="username" id="username" placeholder="Username" required minlength="4">
                 <input type="password" name="password" id="password" placeholder="Password" required minlength="8">
                 <a href="#">Forget Your Password?</a>
