@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeUI() {
-  const container = document.getElementById("container");
+  const container = document.getElementById("auth-container");
   const registerBtn = document.getElementById("register");
   const loginBtn = document.getElementById("login");
   const signInBtn = document.getElementById("sign-in-btn");
@@ -89,7 +89,7 @@ async function handleSignUp(event) {
       console.log("User: ", response.user);
       alert("Registration successful! Please log in.");
       signupForm.reset();
-      document.getElementById("container")?.classList.remove("active");
+      document.getElementById("auth-container")?.classList.remove("active");
     }
   } catch (error) {
     alert(error.message || "Registration failed. Please try again.");

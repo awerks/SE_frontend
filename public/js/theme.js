@@ -1,5 +1,5 @@
 function initializeTheme() {
-    const themeToggle = document.getElementById("theme-toggle");
+    const themeToggle = document.getElementById("auth-theme-toggle");
     const rootElement = document.documentElement;
     const savedTheme = localStorage.getItem("theme");
 

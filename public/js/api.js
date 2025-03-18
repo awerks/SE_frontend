@@ -19,8 +19,8 @@ async function loginUser(data, username) {
     const resData = await response.json();
 
     console.log("Response data:", resData);
-    if (resData && typeof resData === "object" && resData.token) {
-      alert(`Token: ${resData.token}\nExpiration: ${resData.expiresIn}s`);
+    if (resData && typeof resData === "object") {
+      alert("Login successful!\n" + JSON.stringify(resData));
       localStorage.setItem("username", username);
       window.location.href = "./index.html";
     } else {
