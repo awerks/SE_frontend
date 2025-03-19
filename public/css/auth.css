@@ -59,7 +59,7 @@ body {
 }
 
 #auth-container a {
-    color: var(--text);
+    /* color: var(--text); */
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
@@ -266,22 +266,25 @@ body {
 }
 
 
-.toggle-panel h1, .toggle-panel p {
-    color: var(--text);  
+.toggle-panel h1,
+.toggle-panel p {
+    color: var(--text);
     transition: color 0.6s ease;
 }
 
-#register, #login {
+#register,
+#login {
     color: var(--button-text);
-    transition: color 0.6s ease; 
+    transition: color 0.6s ease;
 }
+
 /* issue with this button not transitioning the same as the others */
 #auth-container.active #register {
-    color: var(--text);  
+    color: var(--text);
 }
 
 #auth-container.active #login {
-    color: var(--text); 
+    color: var(--text);
 }
 
 .toggle-left {
@@ -310,13 +313,13 @@ body {
 #auth-theme-toggle {
     background-color: var(--primary);
     border: none;
-    font-size: 14px;  
+    font-size: 14px;
     color: var(--background);
-    padding: 6px 12px; 
-    border-radius: 30px; 
+    padding: 6px 12px;
+    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease; 
-    font-weight: 600; 
+    transition: background-color 0.3s ease;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -327,5 +330,5 @@ body {
 }
 
 #auth-theme-toggle:active {
-    background-color: var(--accent); 
+    background-color: var(--accent);
 }
