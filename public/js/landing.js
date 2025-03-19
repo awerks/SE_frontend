@@ -1,3 +1,20 @@
+function displayUserInfo()
+{
+  const userName = localStorage.getItem("username");
+  const userRole = localStorage.getItem("userrole");
+
+  const userInfoElement = document.getElementById("user-info");//solved
+
+  if(userName)//made a role checker because there was nothig saved in the localStorage
+  {
+    userInfoElement.textContent = `${username} (${userrole ?  userrole : "role nonexistent"})`;
+  }
+  else
+  {
+    userInfoElement.textContent = "Guest";
+  }
+}
+
 function loadPage(url, updateHistory = true) {
   fetch(url)
     .then(response => {
@@ -47,7 +64,11 @@ function addIndividualProjectListeners() {
   });
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  displayUserInfo();
+
   const sidebarAllProjectBtn = document.querySelector('.sidebar_all_project_button');
   if (sidebarAllProjectBtn) {
     sidebarAllProjectBtn.addEventListener('click', e => {
