@@ -76,7 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!button) return;
 
     const page = button.getAttribute("data-page");
-    if (page) loadPage(`../pages/${page}.html`);
+    // won't work on railway because of how the server is set up
+    // if (page) loadPage(`../pages/${page}.html`);
+    // please do this instead (works both on local and railway)
+    // since js is loaded via script to the page itself, it's inside pages already, so you can do this
+    if (page) loadPage(`./${page}.html`);
   });
 
   window.addEventListener("popstate", (e) => {
