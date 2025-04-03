@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New version</title>
+  <title>SE</title>
   <link rel="stylesheet" href="../css/landing.css">
 </head>
 
@@ -13,25 +13,23 @@
     <button onclick="window.location.href='./index.html'">back to index</button>
   </header>
 
-  <section class="sidebar">
+  <aside class="sidebar">
     <div class="user_info">
       <div class="user_name">
         <p id="user-info">username</p>
       </div>
     </div>
-    <div class="sidebar_project_list">
-      <button class="sidebar_all_project_button">all project</button>
-      <button class="sidebar_project_button">project1</button>
-      <button class="sidebar_project_button">project2</button>
-      <button class="sidebar_project_button">project3</button>
-      <button class="sidebar_chat_button">chat</button>
-      <button>manage team</button>
+    <div class="sidebar_button">
+      <button class="dynamic_nav" data-page="teamspace">team space</button>
+      <button class="dynamic_nav" data-page="chat">chat</button>
+      <button class="dynamic_nav" data-page="cost">cost calculation</button>
+      <button class="dynamic_nav" data-page="manage">manage team</button>
     </div>
     <div class="sidebar_buttom_section">
       <button id="changeTheme">Change theme</button>
       <button id="logout">Log out</button>
     </div>
-  </section>
+  </aside>
 
   <main class="main" id="main-content">
     <!-- Default content will be loaded here dynamically -->

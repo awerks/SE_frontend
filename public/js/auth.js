@@ -1,6 +1,6 @@
 import { initializeTheme } from "./theme.js";
 import { loginUser, signupUser } from "./api.js";
-
+import { saveUserInfo } from "./utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   initializeUI();
   initializeTheme();
@@ -51,11 +51,7 @@ async function handleSignIn(event) {
   let localStorageData = await loginUser(data)
   saveUserInfo(localStorageData);
 }
-function saveUserInfo(userData) {
-  for (let key in userData) {
-    localStorage.setItem(key, userData[key]);
-  }
-}
+
 async function handleSignUp(event) {
 
   const signupForm = document.getElementById("signup-form");

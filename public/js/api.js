@@ -6,6 +6,7 @@ const mockUsers = [];
 // Make mockUsers accessible for testing
 window.mockUsers = mockUsers;
 
+// returns user data 
 async function loginUser(body) {
   try {
     const response = await fetch(`${config.backendUrl}/api/auth/login`, {
