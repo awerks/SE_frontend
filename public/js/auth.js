@@ -29,29 +29,33 @@ function initializeUI() {
   }
 
   if (signInBtn && loginForm) {
-    signInBtn.addEventListener("click", (event) => handleSignIn(event));
+    signInBtn.addEventListener("click", async (event) => handleSignIn(event));
   }
 
   if (signUpBtn && signupForm) {
-    signUpBtn.addEventListener("click", (event) => handleSignUp(event));
+    signUpBtn.addEventListener("click", async (event) => handleSignUp(event));
   }
 }
 
-function handleSignIn(event) {
+async function handleSignIn(event) {
   if (!document.getElementById("login-form").checkValidity()) return;
   event.preventDefault();
 
-  const usernameInput = document.getElementById("username");
+  const usernameOrEmailInput = document.getElementById("username_or_email");
   const passwordInput = document.getElementById("password");
 
-  const username = usernameInput ? usernameInput.value.trim() : "";
+  const usernameOrEmail = usernameOrEmailInput ? usernameOrEmailInput.value.trim() : "";
   const password = passwordInput ? passwordInput.value.trim() : "";
+  const data = { usernameOrEmail, password };
 
-  const data = { username, password };
-
-  loginUser(data, username);
+  let localStorageData = await loginUser(data)
+  saveUserInfo(localStorageData);
 }
-
+function saveUserInfo(userData) {
+  for (let key in userData) {
+    localStorage.setItem(key, userData[key]);
+  }
+}
 async function handleSignUp(event) {
 
   const signupForm = document.getElementById("signup-form");

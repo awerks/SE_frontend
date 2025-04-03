@@ -1,18 +1,14 @@
-function displayUserInfo()
-{
-  const userName = localStorage.getItem("username");
-  const userRole = localStorage.getItem("userrole");
-
-  const userInfoElement = document.getElementById("user-info");//solved
-
-  if(userName)//made a role checker because there was nothig saved in the localStorage
-  {
-    userInfoElement.textContent = `${username} (${userrole ?  userrole : "role nonexistent"})`;
+function displayUserInfo() {
+  const userInfoEl = document.getElementById("user-info");
+  if (!userInfoEl) {
+    console.warn("User info element not found.");
+    return;
   }
-  else
-  {
-    userInfoElement.textContent = "Guest";
-  }
+
+  const username = localStorage.getItem("username");
+  const role = localStorage.getItem("role") ?? "User";
+
+  userInfoEl.textContent = username ? `${username} (${role})` : "Guest";
 }
 
 function loadPage(url, updateHistory = true) {
