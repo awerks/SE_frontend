@@ -6,7 +6,8 @@ const mockUsers = [];
 // Make mockUsers accessible for testing
 window.mockUsers = mockUsers;
 
-async function loginUser(data, username) {
+// returns user data 
+async function loginUser(body) {
   try {
     const response = await fetch(`${config.backendUrl}/api/auth/login`, {
       method: "POST",
@@ -14,20 +15,20 @@ async function loginUser(data, username) {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
     });
     const resData = await response.json();
 
     console.log("Response data:", resData);
     if (resData && typeof resData === "object") {
       alert("Login successful!\n" + JSON.stringify(resData));
-      localStorage.setItem("username", username);
       window.location.href = "./index.html";
+      return { username: resData.username, role: resData.role };
     } else {
       alert("Response: " + resData);
     }
   } catch (error) {
-    console.error("Error:", error);
+    alert("Error:", error);
   }
 }
 
