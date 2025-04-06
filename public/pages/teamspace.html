@@ -1,0 +1,62 @@
+<section class="teamspace_page">
+  <header class="teamspace_header">
+    <h1>Your teamspaces</h1>
+    <button id="openTeamModalBtn">+ New Team Space</button>
+  </header>
+
+  <section class="teamspace_list">
+    <article class="teamspace_card dynamic_nav" data-page="project">
+      <div class="card_top">
+        <h3 class="team_name">Team One</h3>
+        <p class="created">Created: Jan 2025</p>
+      </div>
+      <p class="team_desc">This is a very cool teamspace</p>
+    </article>
+    <article class="teamspace_card dynamic_nav" data-page="project">
+      <div class="card_top">
+        <h3 class="team_name">Team Two</h3>
+        <p class="created">Created: Jan 2025</p>
+      </div>
+      <p class="team_desc">This is a very cool teamspace</p>
+    </article>
+    <article class="teamspace_card dynamic_nav" data-page="project">
+      <div class="card_top">
+        <h3 class="team_name">Team Three</h3>
+        <p class="created">Created: Jan 2025</p>
+      </div>
+      <p class="team_desc">This is a very cool teamspace</p>
+    </article>
+
+    <section id="createTeamModalOverlay" class="modal-overlay hidden">
+      <div class="modal">
+        <h2>Create New Team Space</h2>
+        <form class="createTeamForm" id="createTeamForm">
+          <label for="teamName">Space name:</label>
+          <input
+            type="text"
+            class="modal-input"
+            id="teamName"
+            name="teamName"
+            required
+            placeholder="Enter teamspace name..."
+          />
+
+          <label for="teamDescription">Space description:</label>
+          <textarea
+            class="modal-input"
+            id="teamDescription"
+            name="teamDescription"
+            required
+            placeholder="Write the description..."
+            rows="3"
+          ></textarea>
+
+          <div class="modal-buttons">
+            <button type="submit" id="createTeamBtn">Create</button>
+            <button type="button" id="closeTeamModalBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </section>
+</section>

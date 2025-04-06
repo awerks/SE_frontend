@@ -1,16 +1,38 @@
-<div class="task_page">
+<section class="task_page">
+  <!-- Top Bar -->
+  <header class="page_topbar" id="task_topbar">
+    <button class="back-btn dynamic_nav" data-page="dashboard">← Back</button>
+    <h2>Your Task</h2>
+  </header>
 
-  <div class="task_page_element task_page_name">
-    name of task
+  <!-- Task content + Right sidebar -->
+  <div class="task_body">
+    <!-- Left main area -->
+    <div class="task_main">
+      <section class="task_description card">
+        <h3>Description</h3>
+        <p>This is the task description. More details about what needs to be done.</p>
+      </section>
+
+      <section class="task_comments card">
+        <h3>Comments & Activity</h3>
+        <div class="comment_box">
+          <p>No comments yet.</p>
+        </div>
+        <textarea class="comment_input" placeholder="Add a comment..."></textarea>
+        <button class="comment_btn">Comment</button>
+      </section>
+    </div>
+
+    <!-- Right sidebar -->
+    <aside class="task_sidebar card">
+      <h3>Task Details</h3>
+      <ul>
+        <li><strong>Status:</strong> In Progress</li>
+        <li><strong>Due Date:</strong> <time datetime="2025-06-01">1 June 2025</time></li>
+        <li><strong>Leader:</strong> John Doe</li>
+        <li><strong>Members:</strong> Alice, Bob</li>
+      </ul>
+    </aside>
   </div>
-
-  <div class="task_page_element task_page_info">description of task</div>
-  <div class="task_page_element task_page_chat-panel">comments</div>
-  <div class="task_page_element task_page_status">
-
-    <p>status of task</p>
-    <p>due date</p>
-    <p>leader of task</p>
-    <p>other member of task</p>
-  </div>
-</div>
+</section>
