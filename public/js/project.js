@@ -157,7 +157,7 @@ async function deleteProject(projectId)
 document.getElementById('create-project-form').addEventListener('submit', event => {
     event.preventDefault();//for preventing the link from opening the URL accidentally
 
-    const title = document.getElementByIdf('project-title').value;
+    const title = document.getElementById('project-title').value;
     const description = document.getElementById('project-description').value;
 
     if(title && description)
