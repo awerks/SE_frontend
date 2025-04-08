@@ -75,7 +75,7 @@ async function viewProject(projectId)
 {
     try
     {
-        const response = await fetch(`${API_URL}/{projectId}`);
+        const response = await fetch(`${API_URL}/${projectId}`);
         
         if(!response.ok) throw new Error('Failed to fetch project details');
 
