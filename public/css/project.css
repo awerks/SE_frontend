@@ -1,0 +1,22 @@
+/*Cristofer will have to toy with this - Andrei*/
+
+body{
+    font-family: Arial, sans-serif; /* sans like in undertale*/
+    padding: 20px;
+}
+
+.project{
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+button{
+    margin-right: 5px;
+    padding: 5px 10px;
+}
+
+.hidden{
+    display: none;
+}
