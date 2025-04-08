@@ -1,3 +1,8 @@
+console.log(document.getElementById('create-project-form')); 
+console.log(document.getElementById('project-list'));    
+console.log(document.getElementById('search-form')); 
+//none of them should be null to be in the clear
+
 const API_URL = '/api/projects';
 
 //helper function for errors as on swagger

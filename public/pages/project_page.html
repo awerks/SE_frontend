@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Projects Management Page</title>
-    <style>
-        body {font-family: Arial, sans-serif; padding: 20px; }
-        .project {border: 1px solid #ccc; padding:10px; margin: 10px 0;}
-        .hidden {display: none;}
-    </style>
+    <link rel="stylesheet" href="../css/project.css">
+
 </head>
 <body>
     <h1>Project Management Page</h1>
@@ -36,7 +33,14 @@
     <!-- variable names might be wrong, they will have to be looked up on by 
      Ben or Cristofer-->
 
+    <section id="project-details" class="hidden">
+        <h2>Project Details</h2>
+        <p id="details-content"></p>
+        <button id="close-details">Close</button>
+    </section>
+    
+
      <!-- the project.html file has a section we can use for project displayment-->
-<script src="../project.js"></script>
+<script src="../js/project.js"></script>
 </body>
 </html>
