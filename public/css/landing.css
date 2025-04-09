@@ -36,7 +36,6 @@ body{
   grid-template-areas:
   "sidebar header"
   "sidebar main"
-
 }
 .header{
   background-color: #fff;
