@@ -13,8 +13,12 @@
     <!-- the form for creating a new project -->
     <h2>Create Project</h2>
     <form id="create-project-form">
+        <label for="project-title">Project Title</label>
         <input type="text" id="project-title" placeholder="Project Title" required>
+
+        <label for="project-description">Project Description</label>
         <textarea id="project-description" placeholder="Project Description" required></textarea>
+
         <button type="submit">Create Project</button>
     </form>
 
@@ -25,6 +29,7 @@
     <section id="project-search">
         <h2>Search Project by ID</h2>
         <form id="search-form">
+            <label for="project-id-input">Project ID</label>
             <input type="text" id="project-id-input" placeholder="Enter Project ID" required>
             <button type="submit">Search</button>
         </form>

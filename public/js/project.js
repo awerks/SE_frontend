@@ -106,14 +106,14 @@ async function updateProject(projectId, updatedData)
         const response = await fetch(`${API_URL}/${projectId}`, {
            method: 'PUT',
            headers: { 'Content-Type': 'application/json' }, 
-           body: JSON.stringify(updateData)
+           body: JSON.stringify(updatedData)
         });
 
         if(!response.ok) throw new Error('Failed to update the project');
 
         const updatedProject = await response.json(); //as Illia explained, like on swaggerhubs
 
-        console.log('Project updated:', updateProject);
+        console.log('Project updated:', updatedProject);
         //for refreshing
 
         loadProjects();    
