@@ -20,8 +20,13 @@ async function createProject(newProjectData)
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newProjectData)
-        });//as on swaggerhubs
+            body: JSON.stringify({
+                name: newProjectData.name,
+                description: newProjectData.description,
+                created_by: localStorage.getItem("userId")
+                //Ben says I will have to add a deadLine and a team_space_id in the future, although optional
+            })
+        });
 
         if(!response.ok) throw new Error('Failed to create project!');
 
@@ -29,8 +34,7 @@ async function createProject(newProjectData)
 
         console.log('Project created:', project);
 
-        //this should refresh the list of projects after creation 
-        loadProjects(); // I have to write this below
+        loadProjects(); // refreshing the list
     } catch(error)
     {
         displayError(error.message);
