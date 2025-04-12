@@ -63,20 +63,66 @@ function displayProjects(projects)
     const projectList = document.getElementById('project-list'); //correct naming??? idk
     projectList.innerHTML = ''; //for clearing
 
+    //error checker to check if there are any existing projects
+    if(!Array.isArray(projects) || projects.length === 0)
+    {
+        projectList.innerHTML = '<p>No Projects found.</p>';
+        return;
+    }
+
     projects.forEach(project => {
         const div = document.createElement('div'); 
         div.className = 'project';
+
         div.innerHTML = `
         <h3>${project.name}</h3>
         <p>${project.description}</p>
-        <p><strong> Created:</strong> ${new Date(project.creation_date).toLocaleTimeString()}</p>
-        <button onclick="viewProject('${project.id}')"> View </button> 
-        <button onclick = "updateProjectPrompt('${project.id}')"> Edit </button>
-        <button onclick="deleteProject('${project.id}')">Delete</button>
+        <p><strong> Created:</strong> ${new Date(project.creation_date).toLocaleString()}</p>
+        <p><strong> Created By ID:</strong> ${project.created_by}</p> 
+
+        ${project.teamspaces && project.teamspaces.length > 0 ? `
+            <p><strong>Teamspaces: </strong></p>
+            <ul>  
+                <!-- unordered list, I guess -->
+                ${project.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
+            </ul> ` : '<p>No teamspaces associated.</p>'}
+
+        <button onclick="viewProject('${project.project_id}')"> View </button> 
+        <button onclick = "updateProjectPrompt('${project.project_id}')"> Edit </button>
+        <button onclick="deleteProject('${project.project_id}')">Delete</button>
         `;
 
         projectList.appendChild(div);
-    });//should this be projectID like on swagger?
+    });//still has variable name problems due to the backend typos
+}
+
+//function for siplaying the search results
+function displaySearchResults(data)
+{
+    const searchResultsDiv = document.getElementById('search-results');
+    searchResultsDiv.innerHTML= '';
+
+    if(data.error)
+    {
+        searchResultsDiv.innerHTML = `<p class="error-message">${data.error}</p>`;
+    }
+    else if (data)
+    {
+        searchResultsDiv.innerHTML = `
+        <div class="project"> <h3>${data.name}</h3>
+            <p>${data.description}</p>
+            <p><strong>Project ID: </strong> ${data.project_id}</p>
+            <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
+            <p><strong>Created By ID: </strong> ${data.created_by}</p>
+            ${data.teamspaces && data.teamspaces.length > 0 ? `
+                <p><strong>Teamspaces:</strong><p>
+                <ul>
+                    ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
+                </ul>
+            ` : ''}
+        </div>
+        `;
+    }
 }
 
 //the function to get it by ID as I said before
@@ -93,7 +139,7 @@ async function viewProject(projectId)
         const detailsSection = document.getElementById('project-details');
         const detailsContent = document.getElementById('details-content');
 
-        detailsContent.innerHTML = `<strong> Title: </strong> ${project.title}<br>
+        detailsContent.innerHTML = `<strong> Name: </strong> ${project.name}<br>
                                     <strong> Description:</strong> ${project.description}`;
         detailsSection.classList.remove('hidden');
     }
@@ -131,12 +177,12 @@ async function updateProject(projectId, updatedData)
 
 function updateProjectPrompt(projectId)
 {
-    const newTitle = prompt('Enter new project title:');
+    const newName = prompt('Enter new project name:');
     const newDescription = prompt('Enter new project description:');
 
-    if(newTitle && newDescription)//checker
+    if(newName && newDescription)//checker
     {
-        updateProject(projectId, { title: newTitle, description: newDescription});
+        updateProject(projectId, { name: newTitle, description: newDescription});
     }
 }
 
@@ -167,12 +213,12 @@ async function deleteProject(projectId)
 document.getElementById('create-project-form').addEventListener('submit', event => {
     event.preventDefault();//for preventing the link from opening the URL accidentally
 
-    const title = document.getElementById('project-title').value;
+    const name = document.getElementById('project-name').value;
     const description = document.getElementById('project-description').value;
 
-    if(title && description)
+    if(name && description)
     {
-        createProject({title, description});
+        createProject({name, description});
         event.target.reset();
     }
     else
