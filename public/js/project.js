@@ -96,35 +96,6 @@ function displayProjects(projects)
     });//still has variable name problems due to the backend typos
 }
 
-//function for siplaying the search results
-function displaySearchResults(data)
-{
-    const searchResultsDiv = document.getElementById('search-results');
-    searchResultsDiv.innerHTML= '';
-
-    if(data.error)
-    {
-        searchResultsDiv.innerHTML = `<p class="error-message">${data.error}</p>`;
-    }
-    else if (data)
-    {
-        searchResultsDiv.innerHTML = `
-        <div class="project"> <h3>${data.name}</h3>
-            <p>${data.description}</p>
-            <p><strong>Project ID: </strong> ${data.project_id}</p>
-            <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
-            <p><strong>Created By ID: </strong> ${data.created_by}</p>
-            ${data.teamspaces && data.teamspaces.length > 0 ? `
-                <p><strong>Teamspaces:</strong><p>
-                <ul>
-                    ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
-                </ul>
-            ` : ''}
-        </div>
-        `;
-    }
-}
-
 //the function to get it by ID as I said before
 
 async function viewProject(projectId)
@@ -182,7 +153,7 @@ function updateProjectPrompt(projectId)
 
     if(newName && newDescription)//checker
     {
-        updateProject(projectId, { name: newTitle, description: newDescription});
+        updateProject(projectId, { name: newName, description: newDescription});
     }
 }
 
@@ -205,6 +176,71 @@ async function deleteProject(projectId)
     catch(error)
     {
         displayError(error.message);
+    }
+}
+
+//function for siplaying the search results
+function displaySearchResults(data)
+{
+    const searchResultsDiv = document.getElementById('search-results');
+    searchResultsDiv.innerHTML= '';
+
+    if(data.error)
+    {
+        searchResultsDiv.innerHTML = `<p class="error-message">${data.error}</p>`;
+    }
+    else if (data)
+    {
+        searchResultsDiv.innerHTML = `
+        <div class="project"> <h3>${data.name}</h3>
+            <p>${data.description}</p>
+            <p><strong>Project ID: </strong> ${data.project_id}</p>
+            <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
+            <p><strong>Created By ID: </strong> ${data.created_by}</p>
+            ${data.teamspaces && data.teamspaces.length > 0 ? `
+                <p><strong>Teamspaces:</strong></p>
+                <ul>
+                ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
+                </ul>
+            ` : ''}
+        </div>
+        `;
+    }else
+    {
+        //imma fallback the unexpected cases
+        searchResultsDiv.innerHTML=`<p>Could not display the project data.</p>`
+    }
+}
+
+async function fetchAndDisplayProject(projectId)
+{
+    try
+    {
+        const response = await fetch(`${API_URL}/${projectId}`);
+
+        if(!response.ok)
+        {
+            if(response.status == 404) //as Illia said a few weeks ago
+            {
+                displaySearchResults({error: `Project with ID ${projectId} not found.`});// extra touch
+            }
+            else
+            {
+                throw new Error(`Failed to fetch the project. Status ${response.status}`);
+            }
+        }
+        else //if there are no errors, just display the project
+        {
+            const project = await response.json();
+            displaySearchResults(project);
+        }
+    }
+    catch(error)
+    {
+        console.error('Search Error:', error);
+        displaySearchResults({error: error.message || 'An error occurred during the search.'});
+        //I could use this or the global displayError function which would be sth like
+        //displayError('Search failed: ' + error.message);    same shit
     }
 }
 
@@ -232,12 +268,30 @@ document.getElementById('close-details').addEventListener('click', ()=> {
 });
 //the event listener to close the project details view
 
+//here I made an event listener for the search form as well
+document.getElementById('search-form').addEventListener('submit', event =>{
+    event.preventDefault(); //preventing the reloading of the page
+
+    const projectIdInput = document.getElementById('project-id-input');
+    const projectId = projectIdInput.value.trim(); //for getting and trimming the input value
+    //I saw in testing that if I don't trim, It will just copy the whitespaces as well
+
+    if(projectId)
+    {
+        fetchAndDisplayProject(projectId);
+    }
+    else
+    {
+        displaySearchResults({error: 'Please enter a Project ID.'});
+    }
+
+    projectIdInput.value = '';
+    //for clearing the input, although idk if this would work
+    //I would leave it commented for now
+})
+
 window.addEventListener('load', loadProjects);
 
 
-
-
-
-
-
-
+//I still don't know which if the naming is 100% correct as there were different namings from
+//the backend team
