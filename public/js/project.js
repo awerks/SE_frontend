@@ -27,12 +27,12 @@ async function createProject(newProjectData)
                 //Ben says I will have to add a deadLine and a team_space_id in the future, although optional
             })
         });
-
+        
         if(!response.ok) throw new Error('Failed to create project!');
 
         const project = await response.json();
 
-        console.log('Project created:', project);
+        console.log('Project created:', project.creation_date);
 
         loadProjects(); // refreshing the list
     } catch(error)
@@ -67,8 +67,9 @@ function displayProjects(projects)
         const div = document.createElement('div'); 
         div.className = 'project';
         div.innerHTML = `
-        <h3>${project.title}</h3>
+        <h3>${project.name}</h3>
         <p>${project.description}</p>
+        <p><strong> Created:</strong> ${new Date(project.creation_date).toLocaleTimeString()}</p>
         <button onclick="viewProject('${project.id}')"> View </button> 
         <button onclick = "updateProjectPrompt('${project.id}')"> Edit </button>
         <button onclick="deleteProject('${project.id}')">Delete</button>
