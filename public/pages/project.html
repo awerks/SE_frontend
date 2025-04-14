@@ -1,0 +1,48 @@
+<section class="project_page">
+  <header class="page_topbar" id="project_topbar">
+    <button class="back-btn dynamic_nav" data-page="teamspace">← Back</button>
+    <h2>Project Management Page</h2>
+  </header>
+
+  <!-- the form for creating a new project -->
+  <section class="project_form card">
+    <h3>Create Project</h3>
+    <form id="create-project-form">
+      <label for="project-name">Project Title</label>
+      <input type="text" id="project-name" placeholder="Project Name" required />
+
+      <label for="project-description">Project Description</label>
+      <textarea
+        id="project-description"
+        placeholder="Project Description"
+        required
+      ></textarea>
+
+      <button type="submit">Create Project</button>
+    </form>
+  </section>
+
+  <!--project displayment section-->
+  <section class="project_list_container">
+    <h3>Active Projects</h3>
+    <div id="project-list"></div>
+  </section>
+
+  <section id="project-search" class="card">
+    <h3>Search Project by ID</h3>
+    <form id="search-form">
+      <label for="project-id-input">Project ID</label>
+      <input type="text" id="project-id-input" placeholder="Enter Project ID" required />
+      <button type="submit">Search</button>
+    </form>
+    <div id="search-results"></div>
+  </section>
+
+  <section id="project-details" class="hidden card">
+    <h3>Project Details</h3>
+    <p id="details-content"></p>
+    <button id="close-details">Close</button>
+  </section>
+</section>
+
+<script type="module" src="../js/project.js"></script>
