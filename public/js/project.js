@@ -18,8 +18,8 @@ async function createProject(newProjectData)
             body: JSON.stringify({
                 name: newProjectData.name,
                 description: newProjectData.description,
-                created_by: localStorage.getItem("userId")
-                
+                created_by: localStorage.getItem("userId"),
+                team_space_id: localStorage.getItem("selectedTeamspaceId")
             })
         });
         
