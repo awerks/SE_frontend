@@ -109,7 +109,7 @@ function displaySearchResults(data)
             <p><strong>Project ID: </strong> ${data.project_id}</p>
             <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
             <p><strong>Created By ID: </strong> ${data.created_by}</p>
-            ${data.teamspaces && data.teamspaces.length > 0 ? `
+            ${Array.isArray(data.teamspaces) && data.teamspaces.length > 0 ? `
                 <p><strong>Teamspaces:</strong><p>
                 <ul>
                     ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
