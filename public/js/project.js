@@ -1,7 +1,3 @@
-console.log(document.getElementById('create-project-form')); 
-console.log(document.getElementById('project-list'));    
-console.log(document.getElementById('search-form')); 
-//none of them should be null to be in the clear
 import config from './config.js';
 const API_URL = `${config.backendUrl}/api/projects`;
 //helper function for errors as on swagger
@@ -23,7 +19,7 @@ async function createProject(newProjectData)
                 name: newProjectData.name,
                 description: newProjectData.description,
                 created_by: localStorage.getItem("userId")
-                //Ben says I will have to add a deadLine and a team_space_id in the future, although optional
+                
             })
         });
         
@@ -49,7 +45,7 @@ async function loadProjects()
         if(!response.ok) throw new Error('Failed to fetch the projects');
 
         const projects = await response.json();
-        displayProjects(projects); //gotta define one for this as well
+        displayProjects(projects); 
     }
     catch(error)
     {
@@ -59,7 +55,7 @@ async function loadProjects()
 
 function displayProjects(projects)
 {
-    const projectList = document.getElementById('project-list'); //correct naming??? idk
+    const projectList = document.getElementById('project-list'); 
     projectList.innerHTML = ''; //for clearing
 
     //error checker to check if there are any existing projects
@@ -95,7 +91,7 @@ function displayProjects(projects)
     });//still has variable name problems due to the backend typos
 }
 
-//function for siplaying the search results
+//function for displaying the search results
 function displaySearchResults(data)
 {
     const searchResultsDiv = document.getElementById('search-results');
@@ -147,7 +143,7 @@ async function viewProject(projectId)
         displayError(error.message);
     }
 }
-//requires overview by Illia or Ben
+
 
 async function updateProject(projectId, updatedData) 
 {
