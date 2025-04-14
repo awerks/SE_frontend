@@ -47,8 +47,11 @@ function attachDynamicClickHandlers(url) {
   if (url.includes("dashboard.html")) {
     addIndividualTaskListeners();
   }
+  if (url.includes("teamspace.html")) {
+  attachModalHandlers();
+  addIndividualTeamspaceListeners();
+  }
 }
-
 function addIndividualTaskListeners() {
   document.querySelectorAll(".card_task").forEach((card) => {
     card.addEventListener("click", (e) => {
@@ -91,6 +94,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function addIndividualTeamspaceListeners() {
+  document.querySelectorAll(".teamspace_card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const teamspaceId = card.getAttribute("data-id"); // must be added in teamspace.html
+      if (!teamspaceId) {
+        console.warn("No teamspace ID found");
+        return;
+      }
+
+      localStorage.setItem("selectedTeamspaceId", teamspaceId);
+      loadPage("project.html");
+    });
+  });
+}
 
 // Teamspace modal logic
 function attachModalHandlers() {
