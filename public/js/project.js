@@ -36,21 +36,24 @@ async function createProject(newProjectData)
     }
 }
 
-async function loadProjects()
-{
-    try //I will get all projects available with GET api/projects; I will have to implement the individual one as well
-    {
-        const response = await fetch(API_URL);
+async function loadProjects() {
+  const teamspaceId = localStorage.getItem("selectedTeamspaceId");
 
-        if(!response.ok) throw new Error('Failed to fetch the projects');
+  if (!teamspaceId) {
+    displayError("No teamspace selected.");
+    return;
+  }
 
-        const projects = await response.json();
-        displayProjects(projects); 
-    }
-    catch(error)
-    {
-        displayError(error.message);
-    }
+  try {
+    const response = await fetch(`${config.backendUrl}/api/teamspaces/${teamspaceId}/projects`);
+
+    if (!response.ok) throw new Error("Failed to fetch projects");
+
+    const projects = await response.json();
+    displayProjects(projects);
+  } catch (error) {
+    displayError(error.message);
+  }
 }
 
 function displayProjects(projects)
