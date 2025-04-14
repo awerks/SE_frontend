@@ -182,7 +182,7 @@ function updateProjectPrompt(projectId)
 
     if(newName && newDescription)//checker
     {
-        updateProject(projectId, { name: newTitle, description: newDescription});
+        updateProject(projectId, { name: newName, description: newDescription});
     }
 }
 
