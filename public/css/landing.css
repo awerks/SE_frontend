@@ -405,10 +405,6 @@ body{
   justify-content: center;
   align-items: center;
 }
-<<<<<<< HEAD
-/* mobile version */
-@media only screen and (max-width: 600px) and (orientation: portrait){/*implement lanscape later?*/
-=======
 
 /* teamspace page */
 .teamspace_page {
@@ -545,7 +541,6 @@ body{
 
 
 @media(max-width: 600px){
->>>>>>> dd3cd7e18b41ba27a69f6aa43c99c283d7eecd2a
   .dash_board{
     flex-direction: column;
     overflow-y: auto;
