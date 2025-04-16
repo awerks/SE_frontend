@@ -59,7 +59,7 @@ async function loadProjects() {
 function displayProjects(projects)
 {
     const projectList = document.getElementById('project-list'); 
-    projectList.innerHTML = ''; //for clearing
+    projectList.innerHTML = ''; //for clearing the container
 
     //error checker to check if there are any existing projects
     if(!Array.isArray(projects) || projects.length === 0)
@@ -69,29 +69,56 @@ function displayProjects(projects)
     }
 
     projects.forEach(project => {
-        const div = document.createElement('div'); 
-        div.className = 'project';
 
-        div.innerHTML = `
-        <h3>${project.name}</h3>
-        <p>${project.description}</p>
-        <p><strong> Created:</strong> ${new Date(project.creation_date).toLocaleString()}</p>
-        <p><strong> Created By ID:</strong> ${project.created_by}</p> 
+        const projectDiv = document.createElement('div'); //container for each project
+        projectDiv.className = 'project';
 
-        ${project.teamspaces && project.teamspaces.length > 0 ? `
-            <p><strong>Teamspaces: </strong></p>
-            <ul>  
-                <!-- unordered list, I guess -->
-                ${project.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
-            </ul> ` : '<p>No teamspaces associated.</p>'}
+        const titleElement = document.createElement('h3');//creating and appending the project title
+        titleElement.textContent = project.name; //cuz name is the title
+        projectDiv.appendChild(titleElement);
 
-        <button onclick="viewProject('${project.project_id}')"> View </button> 
-        <button onclick = "updateProjectPrompt('${project.project_id}')"> Edit </button>
-        <button onclick="deleteProject('${project.project_id}')">Delete</button>
-        `;
+        const descriptionElement = document.createElement('p');//for creating and appending the description
+        descriptionElemenet.textContent = project.description;
+        projectDiv.appendChild(descriptionElemenet);
 
-        projectList.appendChild(div);
-    });//still has variable name problems due to the backend typos
+        const creationDateElemenet = document.createElement('p');//for creating and appending the date
+        descriptionDateElement.innerHTML = `<strong>Created: </strong>${new Date(project.creationDate).toLocaleString()}`;
+        projectDiv.appendChild(creationDateElemenet);
+
+        const createdByElement = document.createElement('p');//who created by project pretty much, knowing every employee will have an ID, even the manager
+        createdByElement.innerHTML = `<strong>Created By ID:</strong> ${project.created_by}`;
+        projectDiv.appendChild(createdByElement);
+        //idk how necessary this is as the projects will ONLY be created by the manager, but we'll see
+
+        if(project.teamspaces && project.teamspaces.length > 0)//creating and appending the teamspaces info, ONYL IF available
+        {
+            const teamspacesLabel = document.createElemenet('p');
+            teamspacesLabel.innerHTML = `<strong>Teamspaces</strong>`;
+            projectDiv.appendChild(teamspacesLabel);
+
+            const teamspacesList = document.createElement('ul');
+            project.teamspaces.forEach(ts =>{
+                const listItem = document.createElement('li');
+                listItem.textContent = `${ts.name} (ID: ${ts.teamspacesId})`;
+                teamspacesList.appendChild(listItem);
+            });
+            projectDiv.appendChild(teamspacesList);
+        }
+        else
+        {   
+            const noTeamspacesElement = document.createElement('p');
+            noTeamspacesElement.textContent = 'No Teamspaces associated.';
+            projectDiv.appendChild(noTeamspacesElement);
+        }
+
+        const viewButton = document.createElement('button');//the vewi button
+        viewButton.textContent = 'View';
+
+        
+
+        
+        
+    })
 }
 
 //the function to get it by ID as I said before
@@ -289,6 +316,13 @@ document.getElementById('search-form').addEventListener('submit', event =>{
 })
 
 window.addEventListener('load', loadProjects);
+
+<pre>
+    window.viewProject = viewProject;
+    window.updateProjectPrompt = updateProjectPrompt;
+    window.deleteProject = deleteProject; 
+</pre>
+//this is so that the inline functions (onclick) can find the functions globally
 
 
 //I still don't know which if the naming is 100% correct as there were different namings from
