@@ -111,14 +111,23 @@ function displayProjects(projects)
             projectDiv.appendChild(noTeamspacesElement);
         }
 
-        const viewButton = document.createElement('button');//the vewi button
+        const viewButton = document.createElement('button');//the view button
         viewButton.textContent = 'View';
+        viewButton.addEventListener('click', () => viewProject(project.projectId));
+        projectDiv.appendChild(viewButton);//attenching the view button as a child
 
-        
+        const editButton = document.createElement('button');//creating and attaching the edit button
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => updateProjectPrompt(project.projectId)); 
+        projectDiv.appendChild(editButton);
 
-        
-        
-    })
+        const deleteButton = document.createElemenet('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteProject(project.projectId));
+        projectDiv.appendChild(deleteButton);//appending the delete button as a child     
+
+        project.appendChild(projectDiv);        
+    });
 }
 
 //the function to get it by ID as I said before
