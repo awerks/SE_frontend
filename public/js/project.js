@@ -18,8 +18,7 @@ async function createProject(newProjectData)
             body: JSON.stringify({
                 name: newProjectData.name,
                 description: newProjectData.description,
-                created_by: localStorage.getItem("userId"),
-                team_space_id: localStorage.getItem("selectedTeamspaceId")
+                created_by: localStorage.getItem("userId")
             })
         });
         
@@ -27,7 +26,7 @@ async function createProject(newProjectData)
 
         const project = await response.json();
 
-        console.log('Project created:', project.creation_date);
+        console.log('Project created:', project.creationDate);
 
         loadProjects(); // refreshing the list
     } catch(error)
@@ -78,12 +77,12 @@ function displayProjects(projects)
         projectDiv.appendChild(titleElement);
 
         const descriptionElement = document.createElement('p');//for creating and appending the description
-        descriptionElemenet.textContent = project.description;
-        projectDiv.appendChild(descriptionElemenet);
+        descriptionElement.textContent = project.description;
+        projectDiv.appendChild(descriptionElement);
 
-        const creationDateElemenet = document.createElement('p');//for creating and appending the date
-        descriptionDateElement.innerHTML = `<strong>Created: </strong>${new Date(project.creationDate).toLocaleString()}`;
-        projectDiv.appendChild(creationDateElemenet);
+        const creationDateElement = document.createElement('p');//for creating and appending the date
+        creationDateElement.innerHTML = `<strong>Created: </strong>${new Date(project.creationDate).toLocaleString()}`;
+        projectDiv.appendChild(creationDateElement);
 
         const createdByElement = document.createElement('p');//who created by project pretty much, knowing every employee will have an ID, even the manager
         createdByElement.innerHTML = `<strong>Created By ID:</strong> ${project.created_by}`;
@@ -92,14 +91,14 @@ function displayProjects(projects)
 
         if(project.teamspaces && project.teamspaces.length > 0)//creating and appending the teamspaces info, ONYL IF available
         {
-            const teamspacesLabel = document.createElemenet('p');
+            const teamspacesLabel = document.createElement('p');
             teamspacesLabel.innerHTML = `<strong>Teamspaces</strong>`;
             projectDiv.appendChild(teamspacesLabel);
 
             const teamspacesList = document.createElement('ul');
             project.teamspaces.forEach(ts =>{
                 const listItem = document.createElement('li');
-                listItem.textContent = `${ts.name} (ID: ${ts.teamspacesId})`;
+                listItem.textContent = `${ts.name} (ID: ${ts.teamspaceId})`;
                 teamspacesList.appendChild(listItem);
             });
             projectDiv.appendChild(teamspacesList);
@@ -121,12 +120,12 @@ function displayProjects(projects)
         editButton.addEventListener('click', () => updateProjectPrompt(project.projectId)); 
         projectDiv.appendChild(editButton);
 
-        const deleteButton = document.createElemenet('button');
+        const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.addEventListener('click', () => deleteProject(project.projectId));
         projectDiv.appendChild(deleteButton);//appending the delete button as a child     
 
-        project.appendChild(projectDiv);         
+        projectList.appendChild(projectDiv);         
     })
 }
 
@@ -228,13 +227,13 @@ function displaySearchResults(data)
         searchResultsDiv.innerHTML = `
         <div class="project"> <h3>${data.name}</h3>
             <p>${data.description}</p>
-            <p><strong>Project ID: </strong> ${data.project_id}</p>
-            <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
+            <p><strong>Project ID: </strong> ${data.projectId}</p>
+            <p><strong>Created: </strong> ${new Date(data.creationDate).toLocaleString()}</p>
             <p><strong>Created By ID: </strong> ${data.created_by}</p>
             ${data.teamspaces && data.teamspaces.length > 0 ? `
                 <p><strong>Teamspaces:</strong></p>
                 <ul>
-                ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
+                ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspacesId})</li>`).join('')}
                 </ul>
             ` : ''}
         </div>
@@ -332,6 +331,7 @@ window.addEventListener('load', loadProjects);
     window.deleteProject = deleteProject; 
 </pre>
 //this is so that the inline functions (onclick) can find the functions globally
+//commented because I think I got rid of the buttons using inline and switch all of them to .addEventLisetner
 
 
 //I still don't know which if the naming is 100% correct as there were different namings from
