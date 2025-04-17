@@ -126,8 +126,8 @@ function displayProjects(projects)
         deleteButton.addEventListener('click', () => deleteProject(project.projectId));
         projectDiv.appendChild(deleteButton);//appending the delete button as a child     
 
-        project.appendChild(projectDiv);        
-    });
+        project.appendChild(projectDiv);         
+    })
 }
 
 //the function to get it by ID as I said before
