@@ -18,7 +18,8 @@ async function createProject(newProjectData)
             body: JSON.stringify({
                 name: newProjectData.name,
                 description: newProjectData.description,
-                created_by: localStorage.getItem("userId")
+                created_by: localStorage.getItem("userId"),
+                team_spaces_id: teamspaceId //what Ben told me to add to make it work
             })
         });
         
@@ -305,9 +306,8 @@ document.getElementById('close-details').addEventListener('click', ()=> {
 document.getElementById('search-form').addEventListener('submit', event =>{
     event.preventDefault(); //preventing the reloading of the page
 
-    const projectIdInput = document.getElementById('project-id-input');
-    const projectId = projectIdInput.value.trim(); //for getting and trimming the input value
-    //I saw in testing that if I don't trim, It will just copy the whitespaces as well
+    const projectIdInput = document.getElementById('project-id-input'); //TODO: fix this; fixed
+    const projectId = projectIdInput.value.trim(); 
 
     if(projectId)
     {
@@ -318,9 +318,7 @@ document.getElementById('search-form').addEventListener('submit', event =>{
         displaySearchResults({error: 'Please enter a Project ID.'});
     }
 
-    projectIdInput.value = '';
-    //for clearing the input, although idk if this would work
-    //I would leave it commented for now
+    projectIdInput.value = ''
 })
 
 window.addEventListener('load', loadProjects);

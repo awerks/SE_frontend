@@ -100,7 +100,7 @@ function addIndividualTeamspaceListeners() {
     card.addEventListener("click", (e) => {
       e.preventDefault();
 
-      const teamspaceId = card.getAttribute("data-id"); // must be added in teamspace.html
+      const teamspaceId = card.getAttribute("data-id"); // must be added in teamspace.html; hardcoded by Andrei on 21/04
       if (!teamspaceId) {
         console.warn("No teamspace ID found");
         return;
