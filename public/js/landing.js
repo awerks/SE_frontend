@@ -30,6 +30,15 @@ function loadPage(url, updateHistory = true) {
       if (url.includes("teamspace.html")) {
         attachModalHandlers();
       }
+      if (url.includes("chat.html")) {
+        loadChatCSS();
+        setTimeout(()=>{
+          const script = document.createElement("script")
+          script.src = "../js/chat.js"
+          document.body.appendChild(script)
+        }, 100)
+      }
+
     })
 
     .catch((error) => {
@@ -144,4 +153,12 @@ function showModal() {
 
 function closeModal() {
   document.getElementById("createTeamModalOverlay")?.classList.add("hidden");
+}
+
+//load chatcss
+function loadChatCSS() {
+  const chatCSS = document.getElementById("chat-css");
+  if (chatCSS) {
+    chatCSS.disabled = false;
+  }
 }
