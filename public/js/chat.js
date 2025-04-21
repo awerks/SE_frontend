@@ -1,3 +1,9 @@
+//wait until html is loaded
+//let user click the chat channel
+//fetch old messages
+//send new messages
+//keep chat updating every few seconds
+
 document.addEventListener("DOMContentLoaded", ()=>{
   const teamspaceEls = document.getquerySelectorAll(".chat_people_name");
   const chatMessages = document.getElementById("chatMesages");
