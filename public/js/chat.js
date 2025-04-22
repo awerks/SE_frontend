@@ -58,26 +58,38 @@ sendBtn.addEventListener("click", () => {
     .finally(() => (sendBtn.disabled = false));
 });
 
-
-
 function fetchMessages() {
   if (!selectedTeamspaceId) return;
 
   fetch(`/api/teamspaces/${selectedTeamspaceId}/chat`)
     .then((res) => res.json())
-    .then((message) => {
+    .then((messages) => {
       chatMessages.innerHTML = ""; //clear old
 
-      message.forEach((msg) => {
+      if (messages.length === 0) {
+        chatMessages.innerHTML =
+          "<p style='color: #777;'>No messages yet. Say hi 👋</p>";
+        return;
+      }
+
+      messages.forEach((msg) => {
         const bubble = document.createElement("div");
         bubble.classList.add("chat_bubble");
         bubble.classList.add(msg.senderId === senderId ? "sent" : "received");
         bubble.textContent = msg.message;
+        
+
+        const time = document.createElement("div");
+        time.style.fontSize = "0.75em";
+        time.style.color = "#999";
+        time.style.marginTop = "4px";
+        time.textContent = new Date(msg.timestamp).toLocaleTimeString();
+        bubble.appendChild(time);
+
         chatMessages.appendChild(bubble);
       });
-
       //scroll to latest
-      chatMessage.scrollTop = chatMessages.scrollingHeight;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     })
     .catch((err) => console.error("Error loading messages", err));
 }
