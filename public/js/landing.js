@@ -42,6 +42,7 @@ function loadPage(url, updateHistory = true) {
 
 function attachDynamicClickHandlers(url) {
   if (url.includes("project.html")) {
+    //initializeProjectPage(); //the function I added belowe on top of addIndividualProjectListeners()
     addIndividualProjectListeners();
   }
   if (url.includes("dashboard.html")) {
@@ -52,6 +53,55 @@ function attachDynamicClickHandlers(url) {
   addIndividualTeamspaceListeners();
   }
 }
+
+//TODO: delete or comment if ti doesn't work
+
+/*
+function initializeProjectPage()
+{
+  console.log("Initializing logic specific to project.html ");
+  //this should have been in project.js but I didn't know I needed it beforehand
+
+  const createProjectForm = document.getElementById('create-project-form');
+  if(createProjectForm)
+  {
+    createProjectForm.addEventListener('submit', (event) =>{
+      event.preventDefault();//should stop the automatic form submission
+      const projectName = document.getElementById('project-name').value;
+      const projectDesc = document.getElementById('project-description').value;
+      console.log("Creating project: ", {name: projectName, description: projectDesc });
+
+      //TODO: I gotta add the logic to save the project, which idk how to atm
+      //I am still confused on what I talked with Illia about because I know it's not an API
+      //call, but we are saving in in localStorage???
+
+      alert(`Project "${projectName}" created (or simulated).`);//for testing
+
+      createProjectForm.reset();//clearing the form
+    });
+  }
+  else
+  {
+    console.warn("Create project form not found on this page.");
+  }
+
+  //event listener for search form as well??
+  const searchForm = document.getElementById('search-form');
+  if(searchForm)
+  {
+    searchForm.addEventListener('submit', (event) => {
+      searchForm.preventDefault();
+      const projectId = document.getElementById('project-id-input').value;
+      console.log("Searching for project ID: ", projectId);//the logs, as Ben recommended, for debugging
+      //TODO: here I also need a search logic
+      document.getElementById('search-results').textContent = `Search results for ${projectId} should appear here.`;
+    });
+  }
+
+}
+*/
+
+
 function addIndividualTaskListeners() {
   document.querySelectorAll(".card_task").forEach((card) => {
     card.addEventListener("click", (e) => {
@@ -78,12 +128,27 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(button);
     if (!button) return;
 
-    const page = button.getAttribute("data-page");
+    const page = button.dataset.page;
+    if(page === 'teamspaces')
+    {
+      loadPage('./project.html');
+    }
+    else
+    {
+      loadPage(`./${page}.html`);
+    }
+
+    //TODO: IMPLEMENT a popstate and anything else needed for history-like navigation
+    //window.addEventListener()
+
+    //the back button works now
+
+    //const page = button.getAttribute("data-page");
     // won't work on railway because of how the server is set up
     // if (page) loadPage(`../pages/${page}.html`);
     // please do this instead (works both on local and railway)
     // since js is loaded via script to the page itself, it's inside pages already, so you can do this
-    if (page) loadPage(`./${page}.html`);
+    //if (page) loadPage(`./${page}.html`);
   });
 
   window.addEventListener("popstate", (e) => {

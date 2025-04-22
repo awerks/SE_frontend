@@ -29,7 +29,7 @@ async function createProject(newProjectData)
 
         console.log('Project created:', project.creationDate);
 
-        loadProjects(); // refreshing the list
+        loadProjects();
     } catch(error)
     {
         displayError(error.message);
@@ -320,16 +320,16 @@ document.getElementById('search-form').addEventListener('submit', event =>{
 
     projectIdInput.value = ''
 })
+/*
 
-window.addEventListener('load', loadProjects);
+window.addEventListener('load', loadProjects); -> doesn't work
 
 <pre>
     window.viewProject = viewProject;
     window.updateProjectPrompt = updateProjectPrompt;
     window.deleteProject = deleteProject; 
 </pre>
-//this is so that the inline functions (onclick) can find the functions globally
-//commented because I think I got rid of the buttons using inline and switch all of them to .addEventLisetner
+*/
 
 
 //I still don't know which if the naming is 100% correct as there were different namings from
