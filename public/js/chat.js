@@ -4,68 +4,80 @@
 //send new messages
 //keep chat updating every few seconds
 
-document.addEventListener("DOMContentLoaded", ()=>{
-  const teamspaceEls = document.getquerySelectorAll(".chat_people_name");
+document.addEventListener("DOMContentLoaded", () => {
+  const teamspaceEls = document.querySelectorAll(".chat_people_name");
   const chatMessages = document.getElementById("chatMesages");
-  const sendBtn = document.getElementById("chatSendBtn")
+  const sendBtn = document.getElementById("chatSendBtn");
   const inputEl = document.getElementById("chatInput");
 
   let selectedTeamspaceId = null;
-  const senderId = parseInt(localStorage.getItem("userId"))
+  const senderId = parseInt(localStorage.getItem("userId"));
 
   let pollingInterval = null;
 
-  teamspaceEls.forEaach((el)=>{
-    el.addEventListener("click", ()=>{
-      selectedTeamspaceId = el.getAttribute("data-teamspace-id")
-      localStorage.setItem("selectedTeamSpaceId", selectedTeamspaceId)
+  teamspaceEls.forEach((el) => {
+    el.addEventListener("click", () => {
+      selectedTeamspaceId = el.getAttribute("data-teamspace-id");
+      localStorage.setItem("selectedTeamSpaceId", selectedTeamspaceId);
+      //highlight active chat
+      teamspaceEls.forEach((el) => el.classList.remove("active"));
+      el.classList.add("active");
+
       fetchMessages();
       clearInterval(pollingInterval);
-      pollingInterval = setInterval(fetchMessages, 3000)
-    })
-  })
-})
+      pollingInterval = setInterval(fetchMessages, 3000);
+    });
+  });
+});
 
-sendBtn.addEventListener("click", ()=>{
+//accept Enter to send message
+inputEl.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendBtn.click();
+});
+
+sendBtn.addEventListener("click", () => {
   const message = inputEl.value.trim();
-  if(!message || !selectedTeamspaceId) return;
-
+  if (!message || !selectedTeamspaceId) return;
+  sendBtn.disabled = true;
   fetch(`/api/teamspace/${selectedTeamspaceId}/chat`, {
     method: "POST",
-    header:{
+    headers: {
       "Content-Type": "application/json",
     },
-    body:JSON.stringify({
+    body: JSON.stringify({
       senderId,
       message,
-    })
+    }),
   })
-    .then((res)=>{
-      if(!res.ok) throw new Error("Failed to send message")
-        inputEl.value=""
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to send message");
+      inputEl.value = "";
       fetchMessages();
     })
-    .cathc((err)=>console.error(err))
-})
+    .catch((err) => console.error(err))
+    .finally(() => (sendBtn.disabled = false));
+});
 
-function fetchMessages(){
-  if(!selectedTeamspaceId) return;
+
+
+function fetchMessages() {
+  if (!selectedTeamspaceId) return;
 
   fetch(`/api/teamspaces/${selectedTeamspaceId}/chat`)
-    .then((res)=> res.json())
-    .then((message)=>{
-      chatMessages.innerHTML ="" //clear old
+    .then((res) => res.json())
+    .then((message) => {
+      chatMessages.innerHTML = ""; //clear old
 
-      message.forEach((msg)=>{
+      message.forEach((msg) => {
         const bubble = document.createElement("div");
         bubble.classList.add("chat_bubble");
-        bubble.classList.add(msg.senderId ===senderId ? "sent": "received");
+        bubble.classList.add(msg.senderId === senderId ? "sent" : "received");
         bubble.textContent = msg.message;
-        chatMessages.appendChild(bubble)
-      })
+        chatMessages.appendChild(bubble);
+      });
 
       //scroll to latest
-      chatMessage.scrollTop = chatMessages.scrollingHeight
+      chatMessage.scrollTop = chatMessages.scrollingHeight;
     })
-    .cathc((err)=> console.error("Error loading messages", err))
+    .catch((err) => console.error("Error loading messages", err));
 }
