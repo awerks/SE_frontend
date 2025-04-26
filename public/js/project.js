@@ -1,5 +1,6 @@
 import config from './config.js';
 const API_URL = `${config.backendUrl}/api/projects`;
+
 //helper function for errors as on swagger
 function displayError(message)
 {
@@ -10,6 +11,14 @@ function displayError(message)
 
 async function createProject(newProjectData)
 {
+    //grabbing the teamspaceId
+    const teamspaceId = localStorage.getItem("selectedTeamspaceId");
+    if(!teamspaceId)
+    {
+        displayError("No teamspaces selected.");
+        return;
+    }
+
     try
     {
         const response = await fetch(API_URL, {
@@ -19,7 +28,7 @@ async function createProject(newProjectData)
                 name: newProjectData.name,
                 description: newProjectData.description,
                 created_by: localStorage.getItem("userId"),
-                team_spaces_id: teamspaceId //what Ben told me to add to make it work
+                //team_space_Id: teamspaceId //what Ben told me to add to make it work
             })
         });
         
@@ -29,7 +38,7 @@ async function createProject(newProjectData)
 
         console.log('Project created:', project.creationDate);
 
-        loadProjects();
+        await loadProjects();
     } catch(error)
     {
         displayError(error.message);
@@ -45,7 +54,7 @@ async function loadProjects() {
   }
 
   try {
-    const response = await fetch(`${config.backendUrl}/api/teamspaces/${teamspaceId}/projects`);
+    const response = await fetch(`${API_URL}/`);
 
     if (!response.ok) throw new Error("Failed to fetch projects");
 
@@ -278,8 +287,9 @@ async function fetchAndDisplayProject(projectId)
     }
 }
 
-//made the event listener .getElementById and put it here
 
+
+//made the event listener .getElementById and put it here
 document.getElementById('create-project-form').addEventListener('submit', event => {
     event.preventDefault();//for preventing the link from opening the URL accidentally
 
@@ -320,6 +330,75 @@ document.getElementById('search-form').addEventListener('submit', event =>{
 
     projectIdInput.value = ''
 })
+
+//displayProjects();
+
+async function initializeProjectPage()
+{
+    console.log("Initializing project page...");//for debugging; to see what loads and not
+
+    //I render the list here
+    try{
+        await displayProjects();
+    }
+    catch(err)
+    {
+        displayError(err.message);
+    }
+
+    //hooking the "Create Project" form
+    const createForm = document.getElementById("create-project-form");
+    if(createForm)
+    {
+        createForm.addEventListener("submit", async e =>{
+            e.preventDefault();
+            const new_name = document.getElementById("project-name").value.trim();
+            const new_description = document.getElementById("project-description").value.trim();
+
+            try{
+                await createProject({name: new_name, description: new_description });
+                createForm.reset();//to delete whatever was written in the box
+                await displayProjects();
+            }
+            catch(err)
+            {
+                displayError(err.message);
+            }
+        });
+    }
+
+    //hooking the "search by Id" form to the button as well
+    const searchForm = document.getElementById("search-form");
+    if(searchForm)
+    {
+        searchForm.addEventListener("submit", async e =>{
+            e.preventDefault();
+            const new_id = document.getElementById("project-id-input").value.trim();
+            if(new_id)
+            {
+                await fetchAndDisplayProject(new_id);
+            }
+            else
+            {
+                displaySearchResults({error: "Please enter a project Id."});
+            }
+
+            //inputEl.value="";
+        });
+    }
+
+    //hooking the close details button as well
+    document
+        .getElementById("close-details")
+        ?.addEventListener("click", () => {
+            document.getElementById("project-details").classList.add("hidden");
+        });
+
+}
+
+document.addEventListener("DOMContentLoaded", initializeProjectPage);
+
+
 /*
 
 window.addEventListener('load', loadProjects); -> doesn't work

@@ -54,52 +54,77 @@ function attachDynamicClickHandlers(url) {
   }
 }
 
-//TODO: delete or comment if ti doesn't work
-
+//TODO: delete or comment if it doesn't work
 /*
-function initializeProjectPage()
+async function initializeProjectPage()
 {
-  console.log("Initializing logic specific to project.html ");
-  //this should have been in project.js but I didn't know I needed it beforehand
+  console.log("Initializing logic specific to project.html");
 
-  const createProjectForm = document.getElementById('create-project-form');
-  if(createProjectForm)
+  //initializing and rendering of the list (as illia said)
+  try{
+    await displayProjects();
+  }catch (err){
+    displayError(err.message);
+  }
+
+  //putting the "create project" here and seeing what happens
+  //"Create Project" -> API -> refresh list (the logic I made it with)
+  const createForm = document.getElementById("create-project-form");//this is in project.js though and project.html
+
+  if(createForm)
   {
-    createProjectForm.addEventListener('submit', (event) =>{
-      event.preventDefault();//should stop the automatic form submission
-      const projectName = document.getElementById('project-name').value;
-      const projectDesc = document.getElementById('project-description').value;
-      console.log("Creating project: ", {name: projectName, description: projectDesc });
+    createForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const new_name = document.getElementById("project-name").value.trim();//do I really need trim()?
+      const new_description = document.getElementById("project-description").value.trim();
 
-      //TODO: I gotta add the logic to save the project, which idk how to atm
-      //I am still confused on what I talked with Illia about because I know it's not an API
-      //call, but we are saving in in localStorage???
-
-      alert(`Project "${projectName}" created (or simulated).`);//for testing
-
-      createProjectForm.reset();//clearing the form
+      try
+      {
+        await createProject({name: new_name, description: new_description});
+        createForm.reset();
+        await displayProjects();
+      }
+      catch (err)
+      {
+        displayError();
+      }
     });
   }
-  else
-  {
-    console.warn("Create project form not found on this page.");
-  }
 
-  //event listener for search form as well??
-  const searchForm = document.getElementById('search-form');
+  //same thing but with "search by id" -> API -> render single result (logic)
+  const searchForm = document.getElementById("search-form");
   if(searchForm)
   {
-    searchForm.addEventListener('submit', (event) => {
-      searchForm.preventDefault();
-      const projectId = document.getElementById('project-id-input').value;
-      console.log("Searching for project ID: ", projectId);//the logs, as Ben recommended, for debugging
-      //TODO: here I also need a search logic
-      document.getElementById('search-results').textContent = `Search results for ${projectId} should appear here.`;
+    searchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("project-id-input").value.trim();//again, these are in project.html
+      const results = document.getElementById("search-results");
+      results.innerHTML = ""; //clearing previous stuff
+
+      try{
+        const new_project = await getProjectById(id);
+        if(new_project)
+        {
+          results.innerHTML = `
+            <div class="project" onlick="viewProject(${new_project.id})">
+              <h4>${new_project.name}</h4>
+              <p>${new_project.description}</p>
+            </div>
+          `;
+        }
+        else
+        {
+          results.textContent = `No project found with Id ${id}.`;
+        }
+      }
+      catch (err)
+      {
+        displayError(err.message);
+      }
     });
   }
-
 }
-*/
+  */
 
 
 function addIndividualTaskListeners() {
