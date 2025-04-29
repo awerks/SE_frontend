@@ -540,67 +540,47 @@ body{
 
 
 
-@media(max-width: 600px){
-  .dash_board{
-    flex-direction: column;
-    overflow-y: auto;
+@media only screen and (max-width: 600px){
+  body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main";
   }
-  .card{
-    width: 100%;
-    min-height: 30%;
+
+  .header {
+    grid-area: header;
+    background-color: #eee;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
   }
-  .header{
-    height: 5vh;
-  }
-  .header button{
-    margin-top: 50px 40px;
-    margin-left: 3vh; 
-  }
-  
-  .sidebar{
-    grid-template-rows: 100px 1fr 100px;
-    grid-template-areas: 
-    "user"
-    "project"
-    "logout"
-    ;
-    width: 8.7vh;
-  }
-  .user_info{
-    height: 5vh;
-  }
-  
-  .sidebar_project_list{
-    margin-top: -40px;
-  }
-  
-  .sidebar_project_list_text{
-    color: #f6f7f9;
-  }
-  
   
   .sidebar_buttom_section{
-    padding-left: 3px;
-    padding-right: 3px;
+    background-color: #eee;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
   }
 
-  .main{
-    margin-top: -40px;
-    margin-left: 2vh;
-    min-height: 90vh;
-  }
-
-  .dash_board_page {
-    flex-direction: column; 
-    overflow-y: auto; 
-  }
-
-  .card {
+  .sidebar {
+    grid-area: sidebar;
     width: 100%; 
-    min-width: unset; 
-    flex-shrink: 1;
   }
   
+  .main {
+    grid-area: main;
+  }
+  .user_info{
+    height:10%;
+  }
   /* task page */
   .task_page{
     height:100%;
