@@ -22,10 +22,10 @@ async function loginUser(body) {
     console.log("Response data:", resData);
     if (resData && typeof resData === "object") {
       alert("Login successful!\n" + JSON.stringify(resData));
-<<<<<<< HEAD
-=======
+
       localStorage.setItem("username", username);
->>>>>>> dc3fd4ae8683e20e9871d1e98a2a2dd1d20b8655
+      localStorage.setItem("role", resData.role);
+      
       window.location.href = "./index.html";
       return { username: resData.username, role: resData.role };
     } else {
