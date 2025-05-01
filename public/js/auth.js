@@ -48,8 +48,17 @@ async function handleSignIn(event) {
   const password = passwordInput ? passwordInput.value.trim() : "";
   const data = { usernameOrEmail, password };
 
+  console.log("Calling loginUser...");
+
   let localStorageData = await loginUser(data)
+  console.log("loginUser returned:", localStorageData);
+
   saveUserInfo(localStorageData);
+  console.log("Saving user info:", localStorageData)
+  console.log("Saved userId:", localStorage.getItem("userId"));
+
+  //it gets displayed as undefined
+  event.preventDefault();
 }
 
 async function handleSignUp(event) {
@@ -84,6 +93,7 @@ async function handleSignUp(event) {
     }
 
     const response = await signupUser(data);
+    saveUserInfo(response.user);
 
     if (response.success) {
       console.log("User: ", response.user);

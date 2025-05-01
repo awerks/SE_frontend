@@ -1,14 +1,25 @@
 function displayUserInfo() {
+
+  /*
   const userInfoEl = document.getElementById("user-info");
   if (!userInfoEl) {
     console.warn("User info element not found.");
     return;
   }
+  */
+  const username = localStorage.getItem("ProjectHub:username");
+  const role     = localStorage.getItem("ProjectHub:role");
+  const userId   = localStorage.getItem("ProjectHub:userId");
 
-  const username = localStorage.getItem("username");
-  const role = localStorage.getItem("role") ?? "User";
+  const usernameEl = document.getElementById("user-username");
+  const roleEl     = document.getElementById("user-role");
+  const userIdEl   = document.getElementById("user-id");
 
-  userInfoEl.textContent = username ? `${username} (${role})` : "Guest";
+  if (usernameEl) usernameEl.textContent = username ?? "Guest";
+  if (roleEl)     roleEl.textContent     = role ?? "Unknown";
+  if (userIdEl)   userIdEl.textContent   = userId ?? "-";
+
+  console.log("User info loaded:", { username, role, userId });
 }
 
 function loadPage(url, updateHistory = true) {
