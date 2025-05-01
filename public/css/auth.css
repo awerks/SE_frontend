@@ -33,6 +33,7 @@ body {
     color: var(--text);
     background-color: var(--grey);
 }
+
 /* Updated container id to be more specific to auth-container */
 #auth-container {
     background-color: var(--background);
@@ -303,6 +304,7 @@ body {
 #auth-container.active .toggle-right {
     transform: translateX(200%);
 }
+
 /* toggle button css */
 .toggle-button {
     position: absolute;
@@ -324,6 +326,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 /* hover effect on toggle button */
 #auth-theme-toggle:hover {
     background-color: var(--secondary);
