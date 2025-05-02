@@ -1,5 +1,5 @@
-function displayUserInfo() {
 
+function displayUserInfo() {
   /*
   const userInfoEl = document.getElementById("user-info");
   if (!userInfoEl) {
@@ -7,9 +7,9 @@ function displayUserInfo() {
     return;
   }
   */
-  const username = localStorage.getItem("ProjectHub:username");
-  const role     = localStorage.getItem("ProjectHub:role");
-  const userId   = localStorage.getItem("ProjectHub:userId");
+  const username = localStorage.getItem("username");
+  const role     = localStorage.getItem("role");
+  const userId   = localStorage.getItem("userId");
 
   const usernameEl = document.getElementById("user-username");
   const roleEl     = document.getElementById("user-role");
@@ -64,79 +64,6 @@ function attachDynamicClickHandlers(url) {
   addIndividualTeamspaceListeners();
   }
 }
-
-//TODO: delete or comment if it doesn't work
-/*
-async function initializeProjectPage()
-{
-  console.log("Initializing logic specific to project.html");
-
-  //initializing and rendering of the list (as illia said)
-  try{
-    await displayProjects();
-  }catch (err){
-    displayError(err.message);
-  }
-
-  //putting the "create project" here and seeing what happens
-  //"Create Project" -> API -> refresh list (the logic I made it with)
-  const createForm = document.getElementById("create-project-form");//this is in project.js though and project.html
-
-  if(createForm)
-  {
-    createForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const new_name = document.getElementById("project-name").value.trim();//do I really need trim()?
-      const new_description = document.getElementById("project-description").value.trim();
-
-      try
-      {
-        await createProject({name: new_name, description: new_description});
-        createForm.reset();
-        await displayProjects();
-      }
-      catch (err)
-      {
-        displayError();
-      }
-    });
-  }
-
-  //same thing but with "search by id" -> API -> render single result (logic)
-  const searchForm = document.getElementById("search-form");
-  if(searchForm)
-  {
-    searchForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const id = document.getElementById("project-id-input").value.trim();//again, these are in project.html
-      const results = document.getElementById("search-results");
-      results.innerHTML = ""; //clearing previous stuff
-
-      try{
-        const new_project = await getProjectById(id);
-        if(new_project)
-        {
-          results.innerHTML = `
-            <div class="project" onlick="viewProject(${new_project.id})">
-              <h4>${new_project.name}</h4>
-              <p>${new_project.description}</p>
-            </div>
-          `;
-        }
-        else
-        {
-          results.textContent = `No project found with Id ${id}.`;
-        }
-      }
-      catch (err)
-      {
-        displayError(err.message);
-      }
-    });
-  }
-}
-  */
-
 
 function addIndividualTaskListeners() {
   document.querySelectorAll(".card_task").forEach((card) => {

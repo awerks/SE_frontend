@@ -1,13 +1,16 @@
+//import { getProjects, createProject, searchProjectById } from './projectFunctions.js';
 import config from './config.js';
 const API_URL = `${config.backendUrl}/api/projects`;
 
-//helper function for errors as on swagger
+
+//TODO: see if it works and either delete or leave everything like this just in case sth gets destroyed
+
 function displayError(message)
 {
     console.error(message);
     alert(message);
 }
-//error is the message
+
 
 async function createProject(newProjectData)
 {
@@ -397,6 +400,7 @@ async function initializeProjectPage()
 }
 
 document.addEventListener("DOMContentLoaded", initializeProjectPage);
+
 
 
 /*
