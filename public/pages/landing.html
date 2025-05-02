@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -9,8 +9,18 @@
 </head>
 
 <body>
+  <!-- will be shown in mobile view -->
+  <div class="mobile-topbar hidden" id="mobile-topbar">
+    <div id="mobile-user-role">Guest</div>
+    <div class="mobile-menu">
+      <button id="mobile-menu-toggle">☰</button>
+      <div class="mobile-dropdown hidden" id="mobile-dropdown">
+      </div>
+    </div>
+  </div>
+
   <header class="header">
-    <button onclick="window.location.href='./index.html'">back to index</button>
+    <button id="header-back-button" onclick="window.location.href='./index.html'">Back to Index</button>
   </header>
 
   <aside class="sidebar">
@@ -23,10 +33,10 @@
       </div>
     </div>
     <div class="sidebar_button">
-      <button class="dynamic_nav" data-page="teamspace">team space</button>
-      <button class="dynamic_nav" data-page="chat">chat</button>
-      <button class="dynamic_nav" data-page="cost">cost calculation</button>
-      <button class="dynamic_nav" data-page="manage">manage team</button>
+      <button class="dynamic_nav" data-page="teamspace">Team Spaces</button>
+      <button class="dynamic_nav" data-page="chat">Chat</button>
+      <button class="dynamic_nav" data-page="cost">Cost Calculation</button>
+      <button class="dynamic_nav" data-page="manage">Manage Team</button>
     </div>
     <div class="sidebar_buttom_section">
       <button id="changeTheme">Change theme</button>
@@ -35,10 +45,10 @@
   </aside>
 
   <main class="main" id="main-content">
-    <!-- Default content will be loaded here dynamically -->
+    <!-- Content will be loaded here dynamically -->
   </main>
 
-  <script src="../js/landing.js"></script>
+  <script type="module" src="../js/landing.js"></script>
 </body>
 
 </html>
