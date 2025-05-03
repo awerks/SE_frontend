@@ -1,15 +1,23 @@
 <section class="chat_page">
   <header class="page_topbar" id="chat_topbar">
-    
     <h2>Chat</h2>
   </header>
 
+  <!-- Left: People/Teamspaces List -->
   <div class="chat_people" id="chat_people">
-    <div class="chat_people_name">john doe</div>
-    <div class="chat_people_name">john doe</div>
-    <div class="chat_people_name">john doe</div>
-    <div class="chat_people_name">john doe</div>
+    <div class="chat_people_name" data-teamspace-id="101">Team space 1</div>
+    <div class="chat_people_name" data-teamspace-id="102">Team space 2</div>
+    <div class="chat_people_name" data-teamspace-id="103">Team space 3</div>
   </div>
 
-  <div class="chat_text" id="chat_text">chat text will be here</div>
+  <!-- Right: Chat messages + input -->
+  <div class="chat_text" id="chat_text">
+    <div class="chat_messages" id="chatMessages">
+      <!-- Chat messages will be injected here -->
+    </div>
+    <div class="chat_input_bar">
+      <input type="text" id="chatInput" placeholder="Type your message..." />
+      <button id="chatSendBtn">Send</button>
+    </div>
+  </div>
 </section>
