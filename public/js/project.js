@@ -68,8 +68,34 @@ async function loadProjects() {
   }
 }
 
+function projectCard(project)
+{
+    const card = document.createElement('article');
+    card.className = 'project_card dynamic_nav';
+    card.dataset.projectId = project.projectId || project.id;
+    card.innerHTML = `
+    <h4>${project.name}</h4>
+    <p>${project.description}</p>`;
+    return card;
+}
+
+
+//TODO: comment this if it doesn't work
 function displayProjects(projects)
 {
+
+    const list = document.getElementById('project-list');
+    list.innerHTML = '';                    // clear previous
+
+    if (!projects.length) 
+    {
+        list.innerHTML = '<p>No Projects found.</p>';
+        return;
+    }
+
+    projects.forEach(p => list.appendChild(projectCard(p)));
+
+    /*
     const projectList = document.getElementById('project-list'); 
     projectList.innerHTML = ''; //for clearing the container
 
@@ -139,7 +165,7 @@ function displayProjects(projects)
         projectDiv.appendChild(deleteButton);//appending the delete button as a child     
 
         projectList.appendChild(projectDiv);         
-    })
+    })*/
 }
 
 //the function to get it by ID as I said before
