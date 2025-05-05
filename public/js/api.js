@@ -1,12 +1,20 @@
 // api.js
 import config from "./config.js";
+import { saveUserInfo } from "./utils.js";
 
 // Mock user database for demonstration
 const mockUsers = [];
 // Make mockUsers accessible for testing
 window.mockUsers = mockUsers;
 
+//the helper to generate unique user IDs (mocked for now)
+function generateId()
+{
+  return crypto.randomUUID();
+}
+
 // returns user data 
+//made it so only it fetches and returns and the redirection is done by the handleSignIn in auth.js
 async function loginUser(body) {
   try {
     const response = await fetch(`${config.backendUrl}/api/auth/login`, {
@@ -17,17 +25,18 @@ async function loginUser(body) {
       },
       body: JSON.stringify(body),
     });
-    const resData = await response.json();
 
-    console.log("Response data:", resData);
-    if (resData && typeof resData === "object") {
+    //waiting for the JSON payload
+    const resData = await response.json();
+    console.log("Response data (for testing):", resData);
+
+    if (resData && typeof resData === "object") { //remove resData.success to redirect for testing
+
       alert("Login successful!\n" + JSON.stringify(resData));
 
-      localStorage.setItem("username", username);
-      localStorage.setItem("role", resData.role);
-      
-      window.location.href = "./index.html";
-      return { username: resData.username, role: resData.role };
+      window.location.href = "./index.html"; //redirecting
+
+      return { userId: resData.userId, username: resData.username, role: resData.role };
     } else {
       alert("Response: " + resData);
     }
@@ -70,6 +79,7 @@ async function signupUser(data) {
 
     // Create mock user
     const newUser = {
+      userId: generateId(),
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -87,6 +97,7 @@ async function signupUser(data) {
       success: true,
       message: "Registration successful",
       user: {
+        userId: newUser.userId,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,

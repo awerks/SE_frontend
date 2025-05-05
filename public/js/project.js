@@ -1,15 +1,27 @@
+//import { getProjects, createProject, searchProjectById } from './projectFunctions.js';
 import config from './config.js';
 const API_URL = `${config.backendUrl}/api/projects`;
-//helper function for errors as on swagger
+
+
+//TODO: see if it works and either delete or leave everything like this just in case sth gets destroyed
+
 function displayError(message)
 {
     console.error(message);
     alert(message);
 }
-//error is the message
+
 
 async function createProject(newProjectData)
 {
+    //grabbing the teamspaceId
+    const teamspaceId = localStorage.getItem("selectedTeamspaceId");
+    if(!teamspaceId)
+    {
+        displayError("No teamspaces selected.");
+        return;
+    }
+
     try
     {
         const response = await fetch(API_URL, {
@@ -19,7 +31,7 @@ async function createProject(newProjectData)
                 name: newProjectData.name,
                 description: newProjectData.description,
                 created_by: localStorage.getItem("userId"),
-                team_space_id: localStorage.getItem("selectedTeamspaceId")
+                //team_space_Id: teamspaceId //what Ben told me to add to make it work
             })
         });
         
@@ -27,9 +39,9 @@ async function createProject(newProjectData)
 
         const project = await response.json();
 
-        console.log('Project created:', project.creation_date);
+        console.log('Project created:', project.creationDate);
 
-        loadProjects(); // refreshing the list
+        await loadProjects();
     } catch(error)
     {
         displayError(error.message);
@@ -45,7 +57,7 @@ async function loadProjects() {
   }
 
   try {
-    const response = await fetch(`${config.backendUrl}/api/teamspaces/${teamspaceId}/projects`);
+    const response = await fetch(`${API_URL}/`);
 
     if (!response.ok) throw new Error("Failed to fetch projects");
 
@@ -56,10 +68,36 @@ async function loadProjects() {
   }
 }
 
+function projectCard(project)
+{
+    const card = document.createElement('article');
+    card.className = 'project_card dynamic_nav';
+    card.dataset.projectId = project.projectId || project.id;
+    card.innerHTML = `
+    <h4>${project.name}</h4>
+    <p>${project.description}</p>`;
+    return card;
+}
+
+
+//TODO: comment this if it doesn't work
 function displayProjects(projects)
 {
+
+    const list = document.getElementById('project-list');
+    list.innerHTML = '';                    // clear previous
+
+    if (!projects.length) 
+    {
+        list.innerHTML = '<p>No Projects found.</p>';
+        return;
+    }
+
+    projects.forEach(p => list.appendChild(projectCard(p)));
+
+    /*
     const projectList = document.getElementById('project-list'); 
-    projectList.innerHTML = ''; //for clearing
+    projectList.innerHTML = ''; //for clearing the container
 
     //error checker to check if there are any existing projects
     if(!Array.isArray(projects) || projects.length === 0)
@@ -69,58 +107,65 @@ function displayProjects(projects)
     }
 
     projects.forEach(project => {
-        const div = document.createElement('div'); 
-        div.className = 'project';
 
-        div.innerHTML = `
-        <h3>${project.name}</h3>
-        <p>${project.description}</p>
-        <p><strong> Created:</strong> ${new Date(project.creation_date).toLocaleString()}</p>
-        <p><strong> Created By ID:</strong> ${project.created_by}</p> 
+        const projectDiv = document.createElement('div'); //container for each project
+        projectDiv.className = 'project';
 
-        ${project.teamspaces && project.teamspaces.length > 0 ? `
-            <p><strong>Teamspaces: </strong></p>
-            <ul>  
-                <!-- unordered list, I guess -->
-                ${project.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
-            </ul> ` : '<p>No teamspaces associated.</p>'}
+        const titleElement = document.createElement('h3');//creating and appending the project title
+        titleElement.textContent = project.name; //cuz name is the title
+        projectDiv.appendChild(titleElement);
 
-        <button onclick="viewProject('${project.project_id}')"> View </button> 
-        <button onclick = "updateProjectPrompt('${project.project_id}')"> Edit </button>
-        <button onclick="deleteProject('${project.project_id}')">Delete</button>
-        `;
+        const descriptionElement = document.createElement('p');//for creating and appending the description
+        descriptionElement.textContent = project.description;
+        projectDiv.appendChild(descriptionElement);
 
-        projectList.appendChild(div);
-    });//still has variable name problems due to the backend typos
-}
+        const creationDateElement = document.createElement('p');//for creating and appending the date
+        creationDateElement.innerHTML = `<strong>Created: </strong>${new Date(project.creationDate).toLocaleString()}`;
+        projectDiv.appendChild(creationDateElement);
 
-//function for displaying the search results
-function displaySearchResults(data)
-{
-    const searchResultsDiv = document.getElementById('search-results');
-    searchResultsDiv.innerHTML= '';
+        const createdByElement = document.createElement('p');//who created by project pretty much, knowing every employee will have an ID, even the manager
+        createdByElement.innerHTML = `<strong>Created By ID:</strong> ${project.created_by}`;
+        projectDiv.appendChild(createdByElement);
+        //idk how necessary this is as the projects will ONLY be created by the manager, but we'll see
 
-    if(data.error)
-    {
-        searchResultsDiv.innerHTML = `<p class="error-message">${data.error}</p>`;
-    }
-    else if (data)
-    {
-        searchResultsDiv.innerHTML = `
-        <div class="project"> <h3>${data.name}</h3>
-            <p>${data.description}</p>
-            <p><strong>Project ID: </strong> ${data.project_id}</p>
-            <p><strong>Created: </strong> ${new Date(data.creation_date).toLocaleString()}</p>
-            <p><strong>Created By ID: </strong> ${data.created_by}</p>
-            ${Array.isArray(data.teamspaces) && data.teamspaces.length > 0 ? `
-                <p><strong>Teamspaces:</strong><p>
-                <ul>
-                    ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspaces_id})</li>`).join('')}
-                </ul>
-            ` : ''}
-        </div>
-        `;
-    }
+        if(project.teamspaces && project.teamspaces.length > 0)//creating and appending the teamspaces info, ONYL IF available
+        {
+            const teamspacesLabel = document.createElement('p');
+            teamspacesLabel.innerHTML = `<strong>Teamspaces</strong>`;
+            projectDiv.appendChild(teamspacesLabel);
+
+            const teamspacesList = document.createElement('ul');
+            project.teamspaces.forEach(ts =>{
+                const listItem = document.createElement('li');
+                listItem.textContent = `${ts.name} (ID: ${ts.teamspaceId})`;
+                teamspacesList.appendChild(listItem);
+            });
+            projectDiv.appendChild(teamspacesList);
+        }
+        else
+        {   
+            const noTeamspacesElement = document.createElement('p');
+            noTeamspacesElement.textContent = 'No Teamspaces associated.';
+            projectDiv.appendChild(noTeamspacesElement);
+        }
+
+        const viewButton = document.createElement('button');//the view button
+        viewButton.textContent = 'View';
+        viewButton.addEventListener('click', () => viewProject(project.projectId));
+        projectDiv.appendChild(viewButton);//attenching the view button as a child
+
+        const editButton = document.createElement('button');//creating and attaching the edit button
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => updateProjectPrompt(project.projectId)); 
+        projectDiv.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteProject(project.projectId));
+        projectDiv.appendChild(deleteButton);//appending the delete button as a child     
+
+        projectList.appendChild(projectDiv);         
+    })*/
 }
 
 //the function to get it by ID as I said before
@@ -206,8 +251,74 @@ async function deleteProject(projectId)
     }
 }
 
-//made the event listener .getElementById and put it here
+//function for siplaying the search results
+function displaySearchResults(data)
+{
+    const searchResultsDiv = document.getElementById('search-results');
+    searchResultsDiv.innerHTML= '';
 
+    if(data.error)
+    {
+        searchResultsDiv.innerHTML = `<p class="error-message">${data.error}</p>`;
+    }
+    else if (data)
+    {
+        searchResultsDiv.innerHTML = `
+        <div class="project"> <h3>${data.name}</h3>
+            <p>${data.description}</p>
+            <p><strong>Project ID: </strong> ${data.projectId}</p>
+            <p><strong>Created: </strong> ${new Date(data.creationDate).toLocaleString()}</p>
+            <p><strong>Created By ID: </strong> ${data.created_by}</p>
+            ${data.teamspaces && data.teamspaces.length > 0 ? `
+                <p><strong>Teamspaces:</strong></p>
+                <ul>
+                ${data.teamspaces.map(ts => `<li>${ts.name} (ID: ${ts.teamspacesId})</li>`).join('')}
+                </ul>
+            ` : ''}
+        </div>
+        `;
+    }else
+    {
+        //imma fallback the unexpected cases
+        searchResultsDiv.innerHTML=`<p>Could not display the project data.</p>`
+    }
+}
+
+async function fetchAndDisplayProject(projectId)
+{
+    try
+    {
+        const response = await fetch(`${API_URL}/${projectId}`);
+
+        if(!response.ok)
+        {
+            if(response.status == 404) //as Illia said a few weeks ago
+            {
+                displaySearchResults({error: `Project with ID ${projectId} not found.`});// extra touch
+            }
+            else
+            {
+                throw new Error(`Failed to fetch the project. Status ${response.status}`);
+            }
+        }
+        else //if there are no errors, just display the project
+        {
+            const project = await response.json();
+            displaySearchResults(project);
+        }
+    }
+    catch(error)
+    {
+        console.error('Search Error:', error);
+        displaySearchResults({error: error.message || 'An error occurred during the search.'});
+        //I could use this or the global displayError function which would be sth like
+        //displayError('Search failed: ' + error.message);    same shit
+    }
+}
+
+
+
+//made the event listener .getElementById and put it here
 document.getElementById('create-project-form').addEventListener('submit', event => {
     event.preventDefault();//for preventing the link from opening the URL accidentally
 
@@ -230,12 +341,105 @@ document.getElementById('close-details').addEventListener('click', ()=> {
 });
 //the event listener to close the project details view
 
-window.addEventListener('load', loadProjects);
+//here I made an event listener for the search form as well
+document.getElementById('search-form').addEventListener('submit', event =>{
+    event.preventDefault(); //preventing the reloading of the page
+
+    const projectIdInput = document.getElementById('project-id-input'); //TODO: fix this; fixed
+    const projectId = projectIdInput.value.trim(); 
+
+    if(projectId)
+    {
+        fetchAndDisplayProject(projectId);
+    }
+    else
+    {
+        displaySearchResults({error: 'Please enter a Project ID.'});
+    }
+
+    projectIdInput.value = ''
+})
+
+//displayProjects();
+
+async function initializeProjectPage()
+{
+    console.log("Initializing project page...");//for debugging; to see what loads and not
+
+    //I render the list here
+    try{
+        await displayProjects();
+    }
+    catch(err)
+    {
+        displayError(err.message);
+    }
+
+    //hooking the "Create Project" form
+    const createForm = document.getElementById("create-project-form");
+    if(createForm)
+    {
+        createForm.addEventListener("submit", async e =>{
+            e.preventDefault();
+            const new_name = document.getElementById("project-name").value.trim();
+            const new_description = document.getElementById("project-description").value.trim();
+
+            try{
+                await createProject({name: new_name, description: new_description });
+                createForm.reset();//to delete whatever was written in the box
+                await displayProjects();
+            }
+            catch(err)
+            {
+                displayError(err.message);
+            }
+        });
+    }
+
+    //hooking the "search by Id" form to the button as well
+    const searchForm = document.getElementById("search-form");
+    if(searchForm)
+    {
+        searchForm.addEventListener("submit", async e =>{
+            e.preventDefault();
+            const new_id = document.getElementById("project-id-input").value.trim();
+            if(new_id)
+            {
+                await fetchAndDisplayProject(new_id);
+            }
+            else
+            {
+                displaySearchResults({error: "Please enter a project Id."});
+            }
+
+            //inputEl.value="";
+        });
+    }
+
+    //hooking the close details button as well
+    document
+        .getElementById("close-details")
+        ?.addEventListener("click", () => {
+            document.getElementById("project-details").classList.add("hidden");
+        });
+
+}
+
+document.addEventListener("DOMContentLoaded", initializeProjectPage);
 
 
 
+/*
+
+window.addEventListener('load', loadProjects); -> doesn't work
+
+<pre>
+    window.viewProject = viewProject;
+    window.updateProjectPrompt = updateProjectPrompt;
+    window.deleteProject = deleteProject; 
+</pre>
+*/
 
 
-
-
-
+//I still don't know which if the naming is 100% correct as there were different namings from
+//the backend team
